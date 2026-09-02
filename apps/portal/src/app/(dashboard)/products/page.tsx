@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Plus, Image as ImageIcon, Trash2 } from 'lucide-react'
+import { Plus, Image as ImageIcon, Trash2, Star } from 'lucide-react'
 import { getProducts, deleteProduct } from '@/app/actions/products'
 
 export default async function ProductsPage() {
@@ -64,7 +64,12 @@ export default async function ProductsPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 font-semibold text-foreground">
-                        {product.title}
+                        <div className="flex items-center gap-2">
+                          {product.title}
+                          {product.is_featured && (
+                            <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" title="Sản phẩm nổi bật" />
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-muted-foreground">
                         {cats.length > 0 ? cats.join(', ') : '—'}

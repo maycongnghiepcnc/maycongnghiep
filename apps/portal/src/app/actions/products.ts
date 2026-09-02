@@ -44,6 +44,8 @@ export async function createProduct(formData: FormData) {
   const tagsString = formData.get('tags') as string
   const tags = tagsString ? tagsString.split(',').map(t => t.trim()).filter(Boolean) : []
   
+  const is_featured = formData.get('is_featured') === 'on'
+  
   const price = priceString ? parseFloat(priceString) : null
   
   const imageUrlsString = formData.get('image_urls') as string
@@ -72,6 +74,7 @@ export async function createProduct(formData: FormData) {
       code,
       serial_number,
       tags,
+      is_featured,
       meta_title,
       meta_description,
       created_by: userId,
@@ -156,6 +159,8 @@ export async function updateProduct(id: string, formData: FormData) {
   const tagsString = formData.get('tags') as string
   const tags = tagsString ? tagsString.split(',').map(t => t.trim()).filter(Boolean) : []
   
+  const is_featured = formData.get('is_featured') === 'on'
+  
   const price = priceString ? parseFloat(priceString) : null
   
   const imageUrlsString = formData.get('image_urls') as string
@@ -184,6 +189,7 @@ export async function updateProduct(id: string, formData: FormData) {
       code,
       serial_number,
       tags,
+      is_featured,
       meta_title,
       meta_description,
       updated_by: userId

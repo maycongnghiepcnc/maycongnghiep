@@ -10,7 +10,11 @@ import {
   LogOut,
   Users,
   Target,
-  Activity
+  Activity,
+  UserCheck,
+  ShoppingBag,
+  Building2,
+  FileText
 } from 'lucide-react'
 
 const navGroups = [
@@ -31,6 +35,8 @@ const navGroups = [
   {
     title: 'CRM',
     items: [
+      { title: 'Khách hàng', href: '/crm/customers', icon: Building2 },
+      { title: 'Đơn hàng', href: '/crm/sales', icon: ShoppingBag },
       { title: 'Liên hệ', href: '/crm/contacts', icon: Users },
       { title: 'Cơ hội', href: '/crm/opportunities', icon: Target },
       { title: 'Hoạt động', href: '/crm/activities', icon: Activity }
@@ -40,6 +46,12 @@ const navGroups = [
     title: 'Cấu hình',
     items: [
       { title: 'Cài đặt', href: '/settings', icon: Settings }
+    ]
+  },
+  {
+    title: 'Website',
+    items: [
+      { title: 'Trang tĩnh', href: '/cms/pages', icon: FileText }
     ]
   }
 ]

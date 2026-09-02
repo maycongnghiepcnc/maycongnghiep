@@ -55,7 +55,7 @@ export default function Header() {
           <a href="#" className="hover:text-yellow-500">DỰ ÁN</a>
           <a href="#" className="hover:text-yellow-500">KIẾN THỨC</a>
           <a href="#" className="hover:text-yellow-500">VỀ CHÚNG TÔI</a>
-          <a href="#" className="hover:text-yellow-500">LIÊN HỆ</a>
+          <a href="/lien-he" className="hover:text-yellow-500">LIÊN HỆ</a>
         </nav>
 
         {/* CTA & Search */}

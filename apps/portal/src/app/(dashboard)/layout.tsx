@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { SidebarNav } from '@/components/sidebar-nav'
 import { Factory, LogOut } from 'lucide-react'
+import { Notifications } from '@/components/notifications'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -84,6 +85,11 @@ export default async function DashboardLayout({
         {/* Subtle Decorative Background Layer */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none z-0"></div>
         
+        {/* Top Header */}
+        <div className="h-16 flex items-center justify-end px-8 z-20 border-b border-border/50 bg-background/50 backdrop-blur-md">
+          <Notifications />
+        </div>
+
         <div className="flex-1 overflow-y-auto z-10 p-8">
           <div className="max-w-6xl mx-auto">
             {children}

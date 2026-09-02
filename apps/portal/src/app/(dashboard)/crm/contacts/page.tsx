@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Plus, Building2, Phone, Mail, Trash2 } from 'lucide-react'
 import { getContacts, deleteContact } from '@/app/actions/crm'
+import { ConvertToCustomerButton } from './convert-button'
 
 const statusMap: Record<string, { label: string, color: string }> = {
   new: { label: 'Mới', color: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
@@ -84,8 +85,11 @@ export default async function ContactsPage() {
                         {statusMap[contact.status || 'new']?.label}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-right">
+                      <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        {contact.status !== 'customer' && (
+                          <ConvertToCustomerButton contactId={contact.id} />
+                        )}
                         <Link
                           href={`/crm/contacts/edit/${contact.id}`}
                           className="p-2 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"

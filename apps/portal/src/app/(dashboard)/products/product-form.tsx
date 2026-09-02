@@ -158,6 +158,25 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
             </div>
           </div>
 
+          {/* Featured Toggle */}
+          <div className="flex items-center gap-3 p-4 border border-border/50 rounded-xl bg-background/30">
+            <input 
+              type="checkbox"
+              id="is_featured"
+              name="is_featured"
+              defaultChecked={initialData?.is_featured}
+              className="w-5 h-5 rounded border-border/50 text-accent focus:ring-accent accent-accent"
+            />
+            <div className="space-y-0.5">
+              <label htmlFor="is_featured" className="text-sm font-medium text-foreground cursor-pointer">
+                Sản phẩm nổi bật (Hiển thị trang chủ)
+              </label>
+              <p className="text-xs text-muted-foreground">
+                Đánh dấu nếu bạn muốn hiển thị sản phẩm này trên trang chủ.
+              </p>
+            </div>
+          </div>
+
           {/* Categories */}
           <div className="space-y-3">
             <label className="text-sm font-medium text-foreground">

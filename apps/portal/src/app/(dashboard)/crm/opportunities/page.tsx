@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Plus, Target, Trash2 } from 'lucide-react'
 import { getOpportunities, deleteOpportunity } from '@/app/actions/crm'
+import { ConvertToSaleButton } from './convert-button'
 
 const stageMap: Record<string, { label: string, color: string }> = {
   lead: { label: 'Tiềm năng', color: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
@@ -78,6 +79,13 @@ export default async function OpportunitiesPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        {opp.stage === 'won' && (
+                          <ConvertToSaleButton 
+                            opportunityId={opp.id} 
+                            title={`Từ cơ hội: ${opp.title}`}
+                            amount={opp.expected_revenue || 0}
+                          />
+                        )}
                         <Link
                           href={`/crm/opportunities/edit/${opp.id}`}
                           className="p-2 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"
