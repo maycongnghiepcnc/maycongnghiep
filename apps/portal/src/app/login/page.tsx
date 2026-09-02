@@ -1,5 +1,6 @@
 import { login } from './actions'
 import { Mail, ArrowRight, Factory, AlertCircle, CheckCircle2 } from 'lucide-react'
+import { SubmitButton } from './submit-button'
 
 export default async function LoginPage({
   searchParams,
@@ -58,14 +59,7 @@ export default async function LoginPage({
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="w-full group relative flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold py-3 px-4 rounded-xl hover:bg-accent/90 transition-all duration-300 overflow-hidden"
-            >
-              <div className="absolute inset-0 w-full h-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></div>
-              <span className="relative z-10">Đăng nhập</span>
-              <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
-            </button>
+            <SubmitButton />
           </form>
 
           {message && (
