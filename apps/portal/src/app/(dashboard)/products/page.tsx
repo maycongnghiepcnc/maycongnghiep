@@ -67,7 +67,9 @@ export default async function ProductsPage() {
                         <div className="flex items-center gap-2">
                           {product.title}
                           {product.is_featured && (
-                            <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" title="Sản phẩm nổi bật" />
+                            <span title="Sản phẩm nổi bật">
+                              <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                            </span>
                           )}
                         </div>
                       </td>
