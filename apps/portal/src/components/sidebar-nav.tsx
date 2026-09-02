@@ -17,7 +17,8 @@ const navGroups = [
   {
     title: 'Hệ thống',
     items: [
-      { title: 'Tổng quan', href: '/', icon: LayoutDashboard }
+      { title: 'Tổng quan', href: '/', icon: LayoutDashboard },
+      { title: 'Người dùng', href: '/users', icon: Users }
     ]
   },
   {

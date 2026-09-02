@@ -3,6 +3,9 @@ import { redirect } from 'next/navigation'
 import { SidebarNav } from '@/components/sidebar-nav'
 import { Factory, LogOut } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function DashboardLayout({
   children,
 }: {
@@ -16,6 +19,19 @@ export default async function DashboardLayout({
 
   if (!user) {
     return redirect('/login')
+  }
+
+  // Fetch role
+  const { data: roleData, error: roleError } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', user.id)
+    .single()
+
+  console.log('--- ROLE CHECK ---', { userId: user.id, roleData, roleError })
+
+  if (!roleData || roleData.role === 'pending') {
+    return redirect('/pending')
   }
 
   const signOut = async () => {
