@@ -1,0 +1,78 @@
+import React from 'react';
+import { MapPin, Clock, Phone, Search, Menu } from 'lucide-react';
+
+export default function Header() {
+  return (
+    <header className="w-full">
+      {/* Top Bar */}
+      <div className="bg-[#0b1221] text-gray-300 text-xs py-2 px-4 sm:px-10 flex justify-between items-center">
+        <div className="flex gap-6">
+          <div className="flex items-center gap-2">
+            <MapPin size={14} />
+            <span className="hidden sm:inline">Showroom: 1234 Quốc lộ 1A, P. An Phú Đông, Q.12, TP.HCM</span>
+            <span className="sm:hidden">1234 QL1A, TP.HCM</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Clock size={14} />
+            <span className="hidden sm:inline">Giờ làm việc: 08:00 - 17:30 (T2 - T7)</span>
+            <span className="sm:hidden">08:00 - 17:30</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <a href="#" className="hover:text-white">
+            {/* Facebook icon fallback */}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <a href="#" className="hover:text-white">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33zM9.75 15.02V8.48L15.5 11.75l-5.75 3.27z"/></svg>
+          </a>
+          <a href="#" className="hover:text-white">
+             {/* TikTok icon fallback */}
+             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.04-.1z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      {/* Navbar */}
+      <div className="bg-[#0b1c3e] text-white px-4 sm:px-10 py-4 flex justify-between items-center">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0b1c3e]">
+             {/* Placeholder Logo Icon */}
+             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </div>
+          <div>
+            <div className="font-bold text-xl tracking-wider">MAYMOC PRO</div>
+            <div className="text-[10px] text-gray-300">GIẢI PHÁP - UY TÍN - HIỆU QUẢ</div>
+          </div>
+        </div>
+
+        {/* Navigation - Desktop */}
+        <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold">
+          <a href="#" className="hover:text-yellow-500 border-b-2 border-yellow-500 pb-1">TRANG CHỦ</a>
+          <a href="#" className="hover:text-yellow-500 flex items-center gap-1">SẢN PHẨM <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg></a>
+          <a href="#" className="hover:text-yellow-500 flex items-center gap-1">GIẢI PHÁP <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg></a>
+          <a href="#" className="hover:text-yellow-500">DỰ ÁN</a>
+          <a href="#" className="hover:text-yellow-500">KIẾN THỨC</a>
+          <a href="#" className="hover:text-yellow-500">VỀ CHÚNG TÔI</a>
+          <a href="#" className="hover:text-yellow-500">LIÊN HỆ</a>
+        </nav>
+
+        {/* CTA & Search */}
+        <div className="hidden lg:flex items-center gap-4">
+          <button className="border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-[#0b1c3e] transition px-4 py-2 text-sm font-bold">
+            NHẬN TƯ VẤN MIỄN PHÍ
+          </button>
+          <button className="text-white hover:text-yellow-500">
+            <Search size={20} />
+          </button>
+        </div>
+
+        {/* Mobile Menu Icon */}
+        <button className="lg:hidden text-white">
+          <Menu size={24} />
+        </button>
+      </div>
+    </header>
+  );
+}
