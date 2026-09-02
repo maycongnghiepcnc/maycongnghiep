@@ -46,6 +46,7 @@ export async function createContact(formData: FormData) {
   const company = formData.get('company') as string || null
   const job_title = formData.get('job_title') as string || null
   const status = formData.get('status') as string || 'new'
+  const note = formData.get('note') as string || null
 
   if (!name) {
     return { error: 'Tên liên hệ là bắt buộc' }
@@ -57,7 +58,7 @@ export async function createContact(formData: FormData) {
   const { error } = await supabase
     .from('crm_contacts')
     .insert([{ 
-      name, email, phone, company, job_title, status,
+      name, email, phone, company, job_title, status, note,
       created_by: userId, updated_by: userId
     }])
 
@@ -79,6 +80,7 @@ export async function updateContact(id: string, formData: FormData) {
   const company = formData.get('company') as string || null
   const job_title = formData.get('job_title') as string || null
   const status = formData.get('status') as string || 'new'
+  const note = formData.get('note') as string || null
 
   if (!name) {
     return { error: 'Tên liên hệ là bắt buộc' }
@@ -90,7 +92,7 @@ export async function updateContact(id: string, formData: FormData) {
   const { error } = await supabase
     .from('crm_contacts')
     .update({ 
-      name, email, phone, company, job_title, status,
+      name, email, phone, company, job_title, status, note,
       updated_by: userId
     })
     .eq('id', id)
@@ -162,6 +164,7 @@ export async function createOpportunity(formData: FormData) {
   const stage = formData.get('stage') as string || 'lead'
   const probability_str = formData.get('probability') as string
   const probability = probability_str ? parseInt(probability_str, 10) : 0
+  const note = formData.get('note') as string || null
 
   if (!title) {
     return { error: 'Tiêu đề là bắt buộc' }
@@ -177,7 +180,7 @@ export async function createOpportunity(formData: FormData) {
   const { error } = await supabase
     .from('crm_opportunities')
     .insert([{ 
-      title, contact_id, expected_revenue, stage, probability,
+      title, contact_id, expected_revenue, stage, probability, note,
       created_by: userId, updated_by: userId
     }])
 
@@ -200,6 +203,7 @@ export async function updateOpportunity(id: string, formData: FormData) {
   const stage = formData.get('stage') as string || 'lead'
   const probability_str = formData.get('probability') as string
   const probability = probability_str ? parseInt(probability_str, 10) : 0
+  const note = formData.get('note') as string || null
 
   if (!title) {
     return { error: 'Tiêu đề là bắt buộc' }
@@ -211,7 +215,7 @@ export async function updateOpportunity(id: string, formData: FormData) {
   const { error } = await supabase
     .from('crm_opportunities')
     .update({ 
-      title, contact_id, expected_revenue, stage, probability,
+      title, contact_id, expected_revenue, stage, probability, note,
       updated_by: userId
     })
     .eq('id', id)

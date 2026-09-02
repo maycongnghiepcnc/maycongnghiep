@@ -136,6 +136,18 @@ export function OpportunityForm({ initialData, contacts }: { initialData?: any, 
                 <option value="lost">Thất bại (Lost)</option>
               </select>
             </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <label htmlFor="note" className="text-sm font-medium text-foreground">Ghi chú (Note)</label>
+              <textarea
+                id="note"
+                name="note"
+                rows={3}
+                defaultValue={initialData?.note}
+                className="w-full bg-background border border-border/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground resize-none"
+                placeholder="Ghi chú thêm về cơ hội này..."
+              />
+            </div>
           </div>
 
           <div className="pt-6 flex justify-end border-t border-border/50 mt-10">
