@@ -40,6 +40,8 @@ export async function createCategory(formData: FormData) {
     return { error: 'Tiêu đề là bắt buộc' }
   }
 
+  const is_featured_home = formData.get('is_featured_home') === 'true'
+
   const slug = slugify(title)
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -60,6 +62,7 @@ export async function createCategory(formData: FormData) {
         image_url,
         hero_banner,
         sort_order,
+        is_featured_home,
         slug: finalSlug,
         created_by: userId,
         updated_by: userId
@@ -134,6 +137,8 @@ export async function updateCategory(id: string, formData: FormData) {
     return { error: 'Tiêu đề là bắt buộc' }
   }
 
+  const is_featured_home = formData.get('is_featured_home') === 'true'
+
   const slug = slugify(title)
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -153,6 +158,7 @@ export async function updateCategory(id: string, formData: FormData) {
         image_url,
         hero_banner,
         sort_order,
+        is_featured_home,
         slug: finalSlug,
         updated_by: userId
       })

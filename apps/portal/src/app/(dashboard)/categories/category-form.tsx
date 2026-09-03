@@ -16,6 +16,7 @@ interface CategoryFormProps {
     hero_banner?: string | null
     sort_order?: number
     slug?: string
+    is_featured_home?: boolean
   }
 }
 
@@ -160,6 +161,25 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
             <p className="text-xs text-muted-foreground mt-2">
               Số nhỏ hơn sẽ hiển thị trước. Mặc định là 0.
             </p>
+          </div>
+
+          <div className="flex items-center gap-3 p-4 bg-background border border-border/50 rounded-xl">
+            <input
+              type="checkbox"
+              id="is_featured_home"
+              name="is_featured_home"
+              defaultChecked={initialData?.is_featured_home ?? false}
+              className="w-5 h-5 rounded border-border text-accent focus:ring-accent"
+              value="true"
+            />
+            <div>
+              <label htmlFor="is_featured_home" className="text-sm font-medium text-foreground cursor-pointer">
+                Hiển thị trên Trang chủ
+              </label>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Bật tùy chọn này để danh mục nổi bật ngay dưới Hero Banner trang chủ.
+              </p>
+            </div>
           </div>
 
           <div className="pt-6 flex justify-end">

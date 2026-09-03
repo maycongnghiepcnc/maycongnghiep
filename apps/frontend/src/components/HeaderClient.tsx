@@ -60,14 +60,14 @@ export default function HeaderClient({ categories = [] }: { categories?: Categor
         <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold">
           <Link 
             href="/" 
-            className={`hover:text-yellow-500 pb-1 ${pathname === '/' ? 'text-yellow-500 border-b-2 border-yellow-500' : ''}`}
+            className={`hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 transition-colors ${pathname === '/' ? 'text-yellow-500 border-yellow-500' : 'border-transparent'}`}
           >
             TRANG CHỦ
           </Link>
-          <div className="relative group">
+          <div className="relative group flex items-center h-full">
             <Link 
               href="/san-pham" 
-              className={`hover:text-yellow-500 pb-1 flex items-center gap-1 ${pathname.startsWith('/san-pham') ? 'text-yellow-500 border-b-2 border-yellow-500' : 'border-b-2 border-transparent'}`}
+              className={`hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 transition-colors ${pathname.startsWith('/san-pham') ? 'text-yellow-500 border-yellow-500' : 'border-transparent'}`}
             >
               SẢN PHẨM <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-300" />
             </Link>
@@ -88,11 +88,18 @@ export default function HeaderClient({ categories = [] }: { categories?: Categor
               </div>
             </div>
           </div>
-          <a href="#" className="hover:text-yellow-500 flex items-center gap-1">GIẢI PHÁP <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg></a>
-          <a href="#" className="hover:text-yellow-500">DỰ ÁN</a>
-          <a href="#" className="hover:text-yellow-500">KIẾN THỨC</a>
-          <a href="#" className="hover:text-yellow-500">VỀ CHÚNG TÔI</a>
-          <Link href="/lien-he" className="hover:text-yellow-500">LIÊN HỆ</Link>
+          <a href="#" className="hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 border-transparent transition-colors">
+            GIẢI PHÁP <ChevronDown size={14} />
+          </a>
+          <a href="#" className="hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 border-transparent transition-colors">DỰ ÁN</a>
+          <a href="#" className="hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 border-transparent transition-colors">KIẾN THỨC</a>
+          <a href="#" className="hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 border-transparent transition-colors">VỀ CHÚNG TÔI</a>
+          <Link 
+            href="/lien-he" 
+            className={`hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 transition-colors ${pathname.startsWith('/lien-he') ? 'text-yellow-500 border-yellow-500' : 'border-transparent'}`}
+          >
+            LIÊN HỆ
+          </Link>
         </nav>
 
         {/* CTA & Search */}

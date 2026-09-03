@@ -45,6 +45,13 @@ export default async function Home() {
     .order('sort_order', { ascending: true })
     .limit(8);
 
+  const { data: featuredCategories } = await supabase
+    .from('categories')
+    .select('title, slug, summary')
+    .eq('is_featured_home', true)
+    .order('sort_order', { ascending: true })
+    .limit(4);
+
   const featuredProducts = rawFeaturedProducts?.map((p: any) => ({
     id: p.id,
     title: p.title,
@@ -65,7 +72,7 @@ export default async function Home() {
           landscapeUrl={homeHeroImageOnlyLandscape}
           portraitUrl={homeHeroImageOnlyPortrait}
         />
-        <FeatureRow />
+        <FeatureRow categories={featuredCategories || []} />
         <FeaturedProducts products={featuredProducts} />
         <Industries />
       </main>
