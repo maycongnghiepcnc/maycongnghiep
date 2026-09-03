@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Plus, Image as ImageIcon, Trash2 } from 'lucide-react'
+import { Plus, Image as ImageIcon, Trash2, ExternalLink } from 'lucide-react'
 import { getCategories, deleteCategory } from '@/app/actions/categories'
 
 export default async function CategoriesPage() {
@@ -72,6 +72,15 @@ export default async function CategoriesPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <a
+                          href={`${process.env.NEXT_PUBLIC_PUBLIC_SITE_URL || 'http://localhost:4000'}/san-pham/${category.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors"
+                          title="Xem trên trang web"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
                         <Link
                           href={`/categories/edit/${category.id}`}
                           className="p-2 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"

@@ -14,7 +14,8 @@ export async function getProducts() {
       product_categories (
         categories (
           id,
-          title
+          title,
+          slug
         )
       )
     `)

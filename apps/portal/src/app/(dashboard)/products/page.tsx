@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Plus, Image as ImageIcon, Trash2, Star } from 'lucide-react'
+import { Plus, Image as ImageIcon, Trash2, Star, ExternalLink } from 'lucide-react'
 import { getProducts, deleteProduct } from '@/app/actions/products'
 
 export default async function ProductsPage() {
@@ -87,6 +87,15 @@ export default async function ProductsPage() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
+                          <a
+                            href={`${process.env.NEXT_PUBLIC_PUBLIC_SITE_URL || 'http://localhost:4000'}/san-pham/${product.product_categories?.[0]?.categories?.slug || 'uncategorized'}/${product.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 text-muted-foreground hover:text-blue-500 hover:bg-blue-500/10 rounded-lg transition-colors"
+                            title="Xem trên trang web"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
                           <Link
                             href={`/products/edit/${product.id}`}
                             className="p-2 text-muted-foreground hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"
