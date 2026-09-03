@@ -3,9 +3,42 @@ import { ArrowRight, Settings, CheckCircle, Clock, CreditCard, Phone } from 'luc
 
 interface HeroProps {
   heroBannerUrl?: string;
+  mode?: string;
+  landscapeUrl?: string;
+  portraitUrl?: string;
 }
 
-export default function Hero({ heroBannerUrl }: HeroProps) {
+export default function Hero({ heroBannerUrl, mode = 'standard', landscapeUrl, portraitUrl }: HeroProps) {
+  if (mode === 'image_only') {
+    return (
+      <div className="relative w-full h-[85vh] md:h-[80vh] flex items-center bg-[#0b1221] overflow-hidden">
+        {/* Desktop Image */}
+        {landscapeUrl && (
+          <img 
+            src={landscapeUrl} 
+            alt="Hero Banner Landscape" 
+            className="hidden md:block w-full h-full object-cover object-center"
+          />
+        )}
+        {/* Mobile Image */}
+        {portraitUrl && (
+          <img 
+            src={portraitUrl} 
+            alt="Hero Banner Portrait" 
+            className="block md:hidden w-full h-full object-cover object-center"
+          />
+        )}
+        {/* Fallback if no images provided but in image_only mode */}
+        {!landscapeUrl && !portraitUrl && (
+          <div className="w-full h-full flex items-center justify-center text-gray-500">
+            Chưa cấu hình ảnh Banner
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Standard Mode (Text + Background Image)
   return (
     <div className="relative w-full min-h-[80vh] flex items-center text-white overflow-hidden">
       {/* Background Image */}

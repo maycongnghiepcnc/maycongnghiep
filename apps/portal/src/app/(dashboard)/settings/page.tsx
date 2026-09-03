@@ -10,7 +10,10 @@ export default async function SettingsPage() {
     companyEmail, 
     companyZalo, 
     companyFb,
-    homeHeroBanner
+    homeHeroBanner,
+    homeHeroMode,
+    homeHeroImageOnlyLandscape,
+    homeHeroImageOnlyPortrait
   ] = await Promise.all([
     getSetting('admin_email'),
     getSetting('company_name'),
@@ -19,7 +22,10 @@ export default async function SettingsPage() {
     getSetting('company_email'),
     getSetting('company_zalo'),
     getSetting('company_fb'),
-    getSetting('home_hero_banner')
+    getSetting('home_hero_banner'),
+    getSetting('home_hero_mode'),
+    getSetting('home_hero_image_only_landscape'),
+    getSetting('home_hero_image_only_portrait')
   ])
 
   const initialSettings = {
@@ -30,7 +36,10 @@ export default async function SettingsPage() {
     company_email: companyEmail || '',
     company_zalo: companyZalo || '',
     company_fb: companyFb || '',
-    home_hero_banner: homeHeroBanner || ''
+    home_hero_banner: homeHeroBanner || '',
+    home_hero_mode: homeHeroMode || 'standard',
+    home_hero_image_only_landscape: homeHeroImageOnlyLandscape || '',
+    home_hero_image_only_portrait: homeHeroImageOnlyPortrait || ''
   }
 
   return (

@@ -7,13 +7,25 @@ import FeaturedProducts from '../components/FeaturedProducts';
 import Industries from '../components/Industries';
 
 export default async function Home() {
-  const { data } = await supabase
+  const { data: settingsData } = await supabase
     .from('system_settings')
-    .select('value')
-    .eq('key', 'home_hero_banner')
-    .single();
+    .select('key, value')
+    .in('key', [
+      'home_hero_banner',
+      'home_hero_mode',
+      'home_hero_image_only_landscape',
+      'home_hero_image_only_portrait'
+    ]);
 
-  const homeHeroBanner = data?.value;
+  const settingsMap = (settingsData || []).reduce((acc: any, item) => {
+    acc[item.key] = item.value;
+    return acc;
+  }, {});
+
+  const homeHeroBanner = settingsMap['home_hero_banner'];
+  const homeHeroMode = settingsMap['home_hero_mode'] || 'standard';
+  const homeHeroImageOnlyLandscape = settingsMap['home_hero_image_only_landscape'];
+  const homeHeroImageOnlyPortrait = settingsMap['home_hero_image_only_portrait'];
 
   const { data: rawFeaturedProducts } = await supabase
     .from('products')
@@ -47,7 +59,12 @@ export default async function Home() {
       <Header />
       
       <main className="flex-grow w-full">
-        <Hero heroBannerUrl={homeHeroBanner} />
+        <Hero 
+          heroBannerUrl={homeHeroBanner} 
+          mode={homeHeroMode}
+          landscapeUrl={homeHeroImageOnlyLandscape}
+          portraitUrl={homeHeroImageOnlyPortrait}
+        />
         <FeatureRow />
         <FeaturedProducts products={featuredProducts} />
         <Industries />

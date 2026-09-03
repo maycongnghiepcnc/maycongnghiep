@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MapPin, Clock, Phone, Search, Menu, ChevronDown } from 'lucide-react';
+import { MapPin, Clock, Phone, Search, Menu, X, ChevronDown } from 'lucide-react';
 
 interface Category {
   title: string;
@@ -12,6 +12,8 @@ interface Category {
 
 export default function HeaderClient({ categories = [] }: { categories?: Category[] }) {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <header className="w-full">
       {/* Top Bar */}
@@ -104,10 +106,68 @@ export default function HeaderClient({ categories = [] }: { categories?: Categor
         </div>
 
         {/* Mobile Menu Icon */}
-        <button className="lg:hidden text-white">
-          <Menu size={24} />
+        <button 
+          className="lg:hidden text-white p-2 hover:bg-white/10 rounded-md transition"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden bg-[#0b1221] text-white border-t border-white/10 absolute w-full z-50 shadow-2xl">
+          <nav className="flex flex-col py-4 px-6 gap-4 font-semibold text-sm">
+            <Link 
+              href="/" 
+              className={`hover:text-yellow-500 py-2 ${pathname === '/' ? 'text-yellow-500' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              TRANG CHỦ
+            </Link>
+            
+            <div className="flex flex-col">
+              <Link 
+                href="/san-pham" 
+                className={`hover:text-yellow-500 py-2 ${pathname.startsWith('/san-pham') ? 'text-yellow-500' : ''}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                SẢN PHẨM
+              </Link>
+              <div className="flex flex-col pl-4 border-l border-white/10 mt-2 gap-2">
+                {categories.map((cat) => (
+                  <Link 
+                    key={cat.slug}
+                    href={`/san-pham/${cat.slug}`}
+                    className="text-gray-300 hover:text-yellow-500 py-1"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {cat.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <a href="#" className="hover:text-yellow-500 py-2">GIẢI PHÁP</a>
+            <a href="#" className="hover:text-yellow-500 py-2">DỰ ÁN</a>
+            <a href="#" className="hover:text-yellow-500 py-2">KIẾN THỨC</a>
+            <a href="#" className="hover:text-yellow-500 py-2">VỀ CHÚNG TÔI</a>
+            <Link 
+              href="/lien-he" 
+              className="hover:text-yellow-500 py-2"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              LIÊN HỆ
+            </Link>
+
+            <div className="mt-4 pt-4 border-t border-white/10 flex flex-col gap-3">
+              <button className="bg-yellow-500 text-[#0b1c3e] w-full py-3 text-sm font-bold rounded-md hover:bg-yellow-400">
+                NHẬN TƯ VẤN MIỄN PHÍ
+              </button>
+            </div>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

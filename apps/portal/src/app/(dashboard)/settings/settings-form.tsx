@@ -128,21 +128,65 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
       <div className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-6 shadow-sm">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <ImageIcon className="w-5 h-5 text-accent" />
-          Cấu hình Trang chủ
+          Cấu hình Banner Trang chủ
         </h3>
-        <div className="space-y-4 max-w-xl">
+        <div className="space-y-6 max-w-xl">
           <div>
             <label className="text-sm font-medium text-foreground block mb-2">
-              Banner chính (Hero Banner)
+              Chế độ hiển thị Banner
             </label>
-            <p className="text-xs text-muted-foreground mb-4">
-              Khuyến nghị sử dụng ảnh kích thước lớn ngang (ví dụ: 1920x1080) để hiển thị đẹp nhất trên màn hình máy tính.
-            </p>
-            <ImageUpload 
-              value={settings['home_hero_banner'] ? [settings['home_hero_banner']] : []}
-              onChange={(urls) => handleChange('home_hero_banner', urls.length > 0 ? urls[urls.length - 1] : '')}
-            />
+            <select
+              value={settings['home_hero_mode'] || 'standard'}
+              onChange={(e) => handleChange('home_hero_mode', e.target.value)}
+              className="w-full bg-background border border-border/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
+            >
+              <option value="standard">Tiêu chuẩn (Chữ + 1 Ảnh nền)</option>
+              <option value="image_only">Chỉ dùng Ảnh (Ảnh PC + Ảnh Mobile)</option>
+            </select>
           </div>
+
+          {(settings['home_hero_mode'] === 'standard' || !settings['home_hero_mode']) ? (
+            <div>
+              <label className="text-sm font-medium text-foreground block mb-2">
+                Ảnh nền Banner (Hero Banner)
+              </label>
+              <p className="text-xs text-muted-foreground mb-4">
+                Khuyến nghị sử dụng ảnh kích thước lớn ngang (ví dụ: 1920x1080).
+              </p>
+              <ImageUpload 
+                value={settings['home_hero_banner'] ? [settings['home_hero_banner']] : []}
+                onChange={(urls) => handleChange('home_hero_banner', urls.length > 0 ? urls[urls.length - 1] : '')}
+              />
+            </div>
+          ) : (
+            <div className="space-y-6 border-t border-border/50 pt-4">
+              <div>
+                <label className="text-sm font-medium text-foreground block mb-2">
+                  Ảnh Banner cho Máy tính (Landscape)
+                </label>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Kích thước khuyến nghị: 1920x1080 (Tỷ lệ 16:9).
+                </p>
+                <ImageUpload 
+                  value={settings['home_hero_image_only_landscape'] ? [settings['home_hero_image_only_landscape']] : []}
+                  onChange={(urls) => handleChange('home_hero_image_only_landscape', urls.length > 0 ? urls[urls.length - 1] : '')}
+                />
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-foreground block mb-2">
+                  Ảnh Banner cho Điện thoại (Portrait)
+                </label>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Kích thước khuyến nghị: 1080x1920 (Tỷ lệ 9:16).
+                </p>
+                <ImageUpload 
+                  value={settings['home_hero_image_only_portrait'] ? [settings['home_hero_image_only_portrait']] : []}
+                  onChange={(urls) => handleChange('home_hero_image_only_portrait', urls.length > 0 ? urls[urls.length - 1] : '')}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

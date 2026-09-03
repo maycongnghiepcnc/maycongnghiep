@@ -87,7 +87,13 @@ export async function POST(req: NextRequest) {
       }
     }
     else if (table === 'system_settings') {
-      if (record?.key === 'home_hero_banner' || old_record?.key === 'home_hero_banner') {
+      const heroKeys = [
+        'home_hero_banner',
+        'home_hero_mode',
+        'home_hero_image_only_landscape',
+        'home_hero_image_only_portrait'
+      ];
+      if (heroKeys.includes(record?.key) || heroKeys.includes(old_record?.key)) {
         revalidatePath('/');
       }
     }
