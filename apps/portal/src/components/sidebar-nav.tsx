@@ -38,7 +38,8 @@ const navGroups = [
       { title: 'Khách hàng', href: '/crm/customers', icon: Building2 },
       { title: 'Đơn hàng', href: '/crm/sales', icon: ShoppingBag },
       { title: 'Liên hệ', href: '/crm/contacts', icon: Users },
-      { title: 'Cơ hội', href: '/crm/opportunities', icon: Target },
+      { title: 'Cơ hội (Lead)', href: '/crm/opportunities', icon: Target },
+      { title: 'Báo giá', href: '/crm/quotations', icon: FileText },
       { title: 'Hoạt động', href: '/crm/activities', icon: Activity }
     ]
   },

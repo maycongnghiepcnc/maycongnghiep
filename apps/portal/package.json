@@ -12,6 +12,7 @@
     "@cnc/config": "workspace:*",
     "@cnc/database": "workspace:*",
     "@cnc/ui": "workspace:*",
+    "@react-pdf/renderer": "^4.9.0",
     "@supabase/ssr": "^0.12.5",
     "@supabase/supabase-js": "^2.113.0",
     "@tiptap/extension-image": "^3.31.0",
