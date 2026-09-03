@@ -15,7 +15,7 @@ export default async function ProductsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
       <Header />
-      
+
       {/* Page Header */}
       <div className="bg-[#0b1c3e] text-white py-12 pt-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-10">
@@ -40,8 +40,8 @@ export default async function ProductsPage() {
             </h2>
             <ul className="space-y-2">
               <li>
-                <Link 
-                  href="/san-pham" 
+                <Link
+                  href="/san-pham"
                   className="block py-2 text-orange-500 font-medium"
                 >
                   Tất cả sản phẩm
@@ -49,8 +49,8 @@ export default async function ProductsPage() {
               </li>
               {categories.map((cat: any) => (
                 <li key={cat.id}>
-                  <Link 
-                    href={`/san-pham/${cat.slug}`} 
+                  <Link
+                    href={`/san-pham/${cat.slug}`}
                     className="block py-2 text-gray-600 hover:text-orange-500 transition"
                   >
                     {cat.title}
@@ -73,19 +73,19 @@ export default async function ProductsPage() {
                 // Determine the primary category slug for the link
                 const primaryCategory = product.product_categories?.[0]?.categories;
                 const categorySlug = primaryCategory?.slug || 'uncategorized';
-                
+
                 return (
-                  <Link 
-                    key={product.id} 
+                  <Link
+                    key={product.id}
                     href={`/san-pham/${categorySlug}/${product.slug}`}
                     className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full"
                   >
                     {/* Image */}
                     <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
                       {product.images && product.images.length > 0 ? (
-                        <img 
-                          src={product.images[0]} 
-                          alt={product.title} 
+                        <img
+                          src={product.images[0]}
+                          alt={product.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
@@ -93,7 +93,7 @@ export default async function ProductsPage() {
                           Không có ảnh
                         </div>
                       )}
-                      
+
                       {/* Price Badge */}
                       {product.price && (
                         <div className="absolute top-4 right-4 bg-orange-500 text-white font-bold px-3 py-1.5 rounded-lg text-sm shadow-lg">
@@ -101,7 +101,7 @@ export default async function ProductsPage() {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Content */}
                     <div className="p-5 flex-1 flex flex-col">
                       <div className="text-xs text-gray-500 mb-2 font-medium uppercase tracking-wider">
@@ -126,7 +126,7 @@ export default async function ProductsPage() {
       </div>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs mt-auto">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH YUJI VINA (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   );

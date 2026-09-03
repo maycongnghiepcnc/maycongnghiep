@@ -14,7 +14,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
   const { categorySlug } = await params
-  
+
   const { data: category } = await supabase
     .from('categories')
     .select('title')
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps) {
     .single()
 
   if (category) {
-    return { title: `${category.title} - Công ty TNHH Máy Công Nghiệp CNC` }
+    return { title: `${category.title} - Công ty TNHH YUJI VINA` }
   }
 
   return { title: 'Danh mục không tồn tại' }
@@ -64,9 +64,9 @@ export default async function CategoryPage({ params }: PageProps) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 font-sans">
       <Header />
-      
+
       {/* Page Header */}
-      <div 
+      <div
         className="bg-[#0b1c3e] text-white py-12 pt-32 relative bg-cover bg-center"
         style={category.hero_banner ? { backgroundImage: `url(${category.hero_banner})` } : {}}
       >
@@ -95,8 +95,8 @@ export default async function CategoryPage({ params }: PageProps) {
             </h2>
             <ul className="space-y-2">
               <li>
-                <Link 
-                  href="/san-pham" 
+                <Link
+                  href="/san-pham"
                   className="block py-2 text-gray-600 hover:text-orange-500 transition"
                 >
                   Tất cả sản phẩm
@@ -104,8 +104,8 @@ export default async function CategoryPage({ params }: PageProps) {
               </li>
               {categories?.map((cat: any) => (
                 <li key={cat.id}>
-                  <Link 
-                    href={`/san-pham/${cat.slug}`} 
+                  <Link
+                    href={`/san-pham/${cat.slug}`}
                     className={`block py-2 transition ${cat.id === category.id ? 'text-orange-500 font-medium' : 'text-gray-600 hover:text-orange-500'}`}
                   >
                     {cat.title}
@@ -125,17 +125,17 @@ export default async function CategoryPage({ params }: PageProps) {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product: any) => (
-                <Link 
-                  key={product.id} 
+                <Link
+                  key={product.id}
                   href={`/san-pham/${category.slug}/${product.slug}`}
                   className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full"
                 >
                   {/* Image */}
                   <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
                     {product.images && product.images.length > 0 ? (
-                      <img 
-                        src={product.images[0]} 
-                        alt={product.title} 
+                      <img
+                        src={product.images[0]}
+                        alt={product.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
@@ -143,7 +143,7 @@ export default async function CategoryPage({ params }: PageProps) {
                         Không có ảnh
                       </div>
                     )}
-                    
+
                     {/* Price Badge */}
                     {product.price && (
                       <div className="absolute top-4 right-4 bg-orange-500 text-white font-bold px-3 py-1.5 rounded-lg text-sm shadow-lg">
@@ -151,7 +151,7 @@ export default async function CategoryPage({ params }: PageProps) {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Content */}
                   <div className="p-5 flex-1 flex flex-col">
                     <div className="text-xs text-gray-500 mb-2 font-medium uppercase tracking-wider">
@@ -175,7 +175,7 @@ export default async function CategoryPage({ params }: PageProps) {
       </div>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs mt-auto">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH YUJI VINA (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   )

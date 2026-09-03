@@ -6,7 +6,7 @@ export default function CategoryLoading() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 font-sans animate-pulse">
       <Header />
-      
+
       {/* Skeleton Page Header */}
       <div className="bg-[#0b1c3e] py-12 pt-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-10">
@@ -58,7 +58,7 @@ export default function CategoryLoading() {
       </div>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs mt-auto">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH YUJI VINA (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   )

@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Máy Công Nghiệp CNC",
+  title: "YUJI VINA",
   description: "Giải pháp hàng đầu về máy móc tự động hóa và thiết bị cơ khí chính xác tại Việt Nam.",
 };
 

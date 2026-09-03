@@ -7,8 +7,8 @@ import { createClient } from '@/utils/supabase/server'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function sendQuotationEmail(
-  quotationId: string, 
-  toEmail: string, 
+  quotationId: string,
+  toEmail: string,
   subject: string,
   message: string,
   base64Pdf: string,
@@ -17,7 +17,7 @@ export async function sendQuotationEmail(
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    
+
     if (!user) {
       throw new Error('Not authenticated')
     }
@@ -28,7 +28,7 @@ export async function sendQuotationEmail(
     const buffer = Buffer.from(base64Data, 'base64')
 
     const data = await resend.emails.send({
-      from: 'Máy Công Nghiệp CNC <onboarding@resend.dev>', // Replace with verified domain in production
+      from: 'YUJI VINA <onboarding@resend.dev>', // Replace with verified domain in production
       to: [toEmail],
       subject: subject,
       html: `
@@ -40,7 +40,7 @@ export async function sendQuotationEmail(
           </div>
           <p>Nếu có bất kỳ thắc mắc nào, Quý khách vui lòng liên hệ lại với chúng tôi.</p>
           <br/>
-          <p>Trân trọng,<br/><strong>Đội ngũ Máy Công Nghiệp CNC</strong></p>
+          <p>Trân trọng,<br/><strong>Đội ngũ YUJI VINA</strong></p>
         </div>
       `,
       attachments: [
@@ -53,7 +53,7 @@ export async function sendQuotationEmail(
 
     // Update status to 'sent'
     await updateQuotationStatus(quotationId, 'sent')
-    
+
     // Log activity in CRM
     const { data: quotation } = await supabase.from('crm_quotations').select('contact_id, opportunity_id').eq('id', quotationId).single()
     if (quotation) {

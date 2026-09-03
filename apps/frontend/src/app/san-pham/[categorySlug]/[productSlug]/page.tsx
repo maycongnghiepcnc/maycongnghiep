@@ -16,7 +16,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
   const { productSlug } = await params
-  
+
   const { data: product } = await supabase
     .from('products')
     .select('title, meta_title, meta_description')
@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: PageProps) {
     .single()
 
   if (product) {
-    return { 
-      title: product.meta_title || `${product.title} - Công ty TNHH Máy Công Nghiệp CNC`,
+    return {
+      title: product.meta_title || `${product.title} - Công ty TNHH YUJI VINA`,
       description: product.meta_description || undefined
     }
   }
@@ -80,7 +80,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
       .limit(4)
       .order('sort_order', { ascending: true })
       .order('created_at', { ascending: false })
-      
+
     if (data) {
       similarProducts = data
     }
@@ -89,7 +89,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans w-full">
       <Header />
-      
+
       {/* Breadcrumb Header */}
       <div className="bg-[#0b1c3e] text-white py-10 pt-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-10">
@@ -97,7 +97,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <Link href="/" className="hover:text-white transition">Trang chủ</Link>
             <ChevronRight size={16} className="mx-2" />
             <Link href="/san-pham" className="hover:text-white transition">Sản phẩm</Link>
-            
+
             {category && (
               <>
                 <ChevronRight size={16} className="mx-2" />
@@ -106,7 +106,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                 </Link>
               </>
             )}
-            
+
             <ChevronRight size={16} className="mx-2 shrink-0" />
             <span className="text-white truncate">{product.title}</span>
           </div>
@@ -115,12 +115,12 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-10 py-12">
         <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-10">
-          
+
           {/* Product Images Gallery (Lightbox & Slideshow) */}
-          <ProductGallery 
-            images={product.images || []} 
-            title={product.title} 
-            isFeatured={product.is_featured} 
+          <ProductGallery
+            images={product.images || []}
+            title={product.title}
+            isFeatured={product.is_featured}
           />
 
           {/* Product Details Info */}
@@ -128,7 +128,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
               {product.title}
             </h1>
-            
+
             <div className="flex flex-wrap items-center gap-4 mb-6">
               {product.price && (
                 <div className="text-2xl font-bold text-orange-500">
@@ -174,7 +174,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
             {/* Action Buttons */}
             <div className="mt-8 flex gap-4">
-              <Link 
+              <Link
                 href="/lien-he"
                 className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg text-center transition-colors shadow-sm"
               >
@@ -190,13 +190,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <h2 className="text-2xl font-bold mb-6 text-gray-900 border-b border-gray-100 pb-4">
               Mô tả chi tiết
             </h2>
-            <div 
+            <div
               className="prose prose-blue max-w-none prose-img:rounded-xl prose-headings:text-gray-800"
               dangerouslySetInnerHTML={{ __html: product.content }}
             />
           </div>
         )}
-        
+
         {/* Video Section */}
         {product.video_url && (
           <div className="mt-12 bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-gray-100">
@@ -204,8 +204,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
               Video sản phẩm
             </h2>
             <div className="aspect-video w-full max-w-4xl mx-auto rounded-xl overflow-hidden shadow-sm bg-gray-100">
-              <iframe 
-                src={product.video_url} 
+              <iframe
+                src={product.video_url}
                 className="w-full h-full"
                 title="Product Video"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -222,17 +222,17 @@ export default async function ProductDetailPage({ params }: PageProps) {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {similarProducts.map((simProduct: any) => (
-                <Link 
-                  key={simProduct.id} 
+                <Link
+                  key={simProduct.id}
                   href={`/san-pham/${category.slug}/${simProduct.slug}`}
                   className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full"
                 >
                   {/* Image */}
                   <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
                     {simProduct.images && simProduct.images.length > 0 ? (
-                      <img 
-                        src={simProduct.images[0]} 
-                        alt={simProduct.title} 
+                      <img
+                        src={simProduct.images[0]}
+                        alt={simProduct.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
@@ -240,7 +240,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                         Không có ảnh
                       </div>
                     )}
-                    
+
                     {/* Price Badge */}
                     {simProduct.price && (
                       <div className="absolute top-3 right-3 bg-orange-500 text-white font-bold px-2 py-1 rounded-lg text-xs shadow-lg">
@@ -248,7 +248,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Content */}
                   <div className="p-4 flex-1 flex flex-col">
                     <h3 className="font-bold text-gray-900 text-sm mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
@@ -267,9 +267,9 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </div>
         )}
       </main>
-      
+
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs mt-auto">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH YUJI VINA (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   )

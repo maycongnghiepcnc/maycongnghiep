@@ -21,12 +21,12 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsPending(true)
-    
+
     try {
-      const promises = Object.entries(settings).map(([key, value]) => 
+      const promises = Object.entries(settings).map(([key, value]) =>
         setSetting(key, value)
       )
-      
+
       const results = await Promise.all(promises)
       const hasError = results.some(r => r.error)
 
@@ -44,7 +44,7 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      
+
       {/* Company Info */}
       <div className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-6 shadow-sm">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
@@ -63,10 +63,10 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
               value={settings['company_name'] || ''}
               onChange={(e) => handleChange('company_name', e.target.value)}
               className="w-full bg-background border border-border/50 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
-              placeholder="VD: MÁY CÔNG NGHIỆP CNC"
+              placeholder="VD: YUJI VINA"
             />
           </div>
-          
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Địa chỉ</label>
             <input
@@ -153,7 +153,7 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
               <p className="text-xs text-muted-foreground mb-4">
                 Khuyến nghị sử dụng ảnh kích thước lớn ngang (ví dụ: 1920x1080).
               </p>
-              <ImageUpload 
+              <ImageUpload
                 value={settings['home_hero_banner'] ? [settings['home_hero_banner']] : []}
                 onChange={(urls) => handleChange('home_hero_banner', urls.length > 0 ? urls[urls.length - 1] : '')}
               />
@@ -167,12 +167,12 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
                 <p className="text-xs text-muted-foreground mb-4">
                   Kích thước khuyến nghị: 1920x1080 (Tỷ lệ 16:9).
                 </p>
-                <ImageUpload 
+                <ImageUpload
                   value={settings['home_hero_image_only_landscape'] ? [settings['home_hero_image_only_landscape']] : []}
                   onChange={(urls) => handleChange('home_hero_image_only_landscape', urls.length > 0 ? urls[urls.length - 1] : '')}
                 />
               </div>
-              
+
               <div>
                 <label className="text-sm font-medium text-foreground block mb-2">
                   Ảnh Banner cho Điện thoại (Portrait)
@@ -180,7 +180,7 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
                 <p className="text-xs text-muted-foreground mb-4">
                   Kích thước khuyến nghị: 1080x1920 (Tỷ lệ 9:16).
                 </p>
-                <ImageUpload 
+                <ImageUpload
                   value={settings['home_hero_image_only_portrait'] ? [settings['home_hero_image_only_portrait']] : []}
                   onChange={(urls) => handleChange('home_hero_image_only_portrait', urls.length > 0 ? urls[urls.length - 1] : '')}
                 />

@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   col2: { width: '15%', textAlign: 'center' },
   col3: { width: '20%', textAlign: 'right' },
   col4: { width: '25%', textAlign: 'right' },
-  
+
   totals: {
     width: '40%',
     alignSelf: 'flex-end',
@@ -137,7 +137,7 @@ const formatCurrency = (amount: number) => {
 
 export default function QuotationPDF({ quotation, companySettings }: { quotation: any, companySettings?: any }) {
   const companyInfo = {
-    name: companySettings?.name || 'MÁY CÔNG NGHIỆP CNC',
+    name: companySettings?.name || 'YUJI VINA',
     address: companySettings?.address || '123 Đường Công Nghiệp, KCN Tân Bình\nTP. Hồ Chí Minh, Việt Nam',
     phone: companySettings?.phone || '0987 654 321',
     email: companySettings?.email || 'contact@maycongnghiep.com'
@@ -182,7 +182,7 @@ export default function QuotationPDF({ quotation, companySettings }: { quotation
             <Text style={styles.col3}>Đơn giá</Text>
             <Text style={styles.col4}>Thành tiền</Text>
           </View>
-          
+
           {quotation.items?.map((item: any, i: number) => (
             <View key={i} style={styles.tableRow}>
               <Text style={styles.col1}>{item.product?.title || 'Sản phẩm'}</Text>

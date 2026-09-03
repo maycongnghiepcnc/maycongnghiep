@@ -46,7 +46,7 @@ export default async function LoginPage({
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-8">
-          &copy; {new Date().getFullYear()} Máy Công Nghiệp CNC. Bảo lưu mọi quyền.
+          &copy; {new Date().getFullYear()} YUJI VINA. Bảo lưu mọi quyền.
         </p>
       </div>
     </div>

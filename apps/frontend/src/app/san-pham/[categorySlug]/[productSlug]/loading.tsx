@@ -5,7 +5,7 @@ export default function ProductLoading() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans w-full animate-pulse">
       <Header />
-      
+
       {/* Skeleton Breadcrumb Header */}
       <div className="bg-[#0b1c3e] py-10 pt-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-10">
@@ -23,7 +23,7 @@ export default function ProductLoading() {
 
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-10 py-12">
         <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-10">
-          
+
           {/* Skeleton Product Images Gallery */}
           <div className="w-full lg:w-1/2">
             <div className="aspect-[4/3] bg-gray-200 rounded-xl"></div>
@@ -37,7 +37,7 @@ export default function ProductLoading() {
           {/* Skeleton Product Details Info */}
           <div className="w-full lg:w-1/2 flex flex-col">
             <div className="w-3/4 h-10 bg-gray-200 rounded mb-4"></div>
-            
+
             <div className="flex gap-4 mb-6">
               <div className="w-32 h-8 bg-gray-200 rounded"></div>
               <div className="w-24 h-8 bg-gray-100 rounded"></div>
@@ -82,9 +82,9 @@ export default function ProductLoading() {
           </div>
         </div>
       </main>
-      
+
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs mt-auto">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH YUJI VINA (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   )

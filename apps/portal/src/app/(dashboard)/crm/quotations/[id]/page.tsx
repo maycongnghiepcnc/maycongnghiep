@@ -8,7 +8,7 @@ import QuotationActions from './quotation-actions'
 export default async function QuotationDetailPage({ params }: { params: { id: string } }) {
   // Fix Next.js 15+ async params
   const id = (await params).id
-  
+
   const [quote, companyName, companyAddress, companyPhone, companyEmail] = await Promise.all([
     getQuotationById(id),
     getSetting('company_name'),
@@ -22,7 +22,7 @@ export default async function QuotationDetailPage({ params }: { params: { id: st
   }
 
   const companySettings = {
-    name: companyName || 'MÁY CÔNG NGHIỆP CNC',
+    name: companyName || 'YUJI VINA',
     address: companyAddress || '123 Đường Công Nghiệp, KCN Tân Bình\nTP. Hồ Chí Minh, Việt Nam',
     phone: companyPhone || '0987 654 321',
     email: companyEmail || 'contact@maycongnghiep.com'
@@ -31,7 +31,7 @@ export default async function QuotationDetailPage({ params }: { params: { id: st
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-6xl mx-auto pb-12">
       <div className="mb-6">
-        <Link 
+        <Link
           href="/crm/quotations"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
@@ -42,14 +42,14 @@ export default async function QuotationDetailPage({ params }: { params: { id: st
             <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2 flex items-center gap-4">
               Báo Giá: {quote.code}
               <span className={`px-3 py-1 text-sm font-medium rounded-full border 
-                ${quote.status === 'draft' ? 'bg-muted text-muted-foreground border-border' : 
-                  quote.status === 'sent' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' : 
-                  quote.status === 'accepted' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 
-                  'bg-red-500/10 text-red-500 border-red-500/20'}`}
+                ${quote.status === 'draft' ? 'bg-muted text-muted-foreground border-border' :
+                  quote.status === 'sent' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
+                    quote.status === 'accepted' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                      'bg-red-500/10 text-red-500 border-red-500/20'}`}
               >
                 {quote.status === 'draft' ? 'Bản nháp' :
-                 quote.status === 'sent' ? 'Đã gửi' :
-                 quote.status === 'accepted' ? 'Đã chốt' : 'Từ chối'}
+                  quote.status === 'sent' ? 'Đã gửi' :
+                    quote.status === 'accepted' ? 'Đã chốt' : 'Từ chối'}
               </span>
             </h1>
             <div className="flex items-center gap-6 text-muted-foreground text-sm mt-4">

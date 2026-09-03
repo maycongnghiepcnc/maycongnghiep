@@ -64,10 +64,10 @@ export default async function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans w-full">
       <Header />
-      
+
       <main className="flex-grow w-full">
-        <Hero 
-          heroBannerUrl={homeHeroBanner} 
+        <Hero
+          heroBannerUrl={homeHeroBanner}
           mode={homeHeroMode}
           landscapeUrl={homeHeroImageOnlyLandscape}
           portraitUrl={homeHeroImageOnlyPortrait}
@@ -78,7 +78,7 @@ export default async function Home() {
       </main>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH YUJI VINA (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   );

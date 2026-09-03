@@ -12,7 +12,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params
-  
+
   // Try CMS page
   const { data: page } = await supabase
     .from('cms_pages')
@@ -20,9 +20,9 @@ export async function generateMetadata({ params }: PageProps) {
     .eq('slug', slug)
     .eq('is_published', true)
     .single()
-    
+
   if (page) {
-    return { title: `${page.title} - Công ty TNHH Máy Công Nghiệp CNC` }
+    return { title: `${page.title} - Công ty TNHH YUJI VINA` }
   }
 
   return { title: 'Trang không tồn tại' }
@@ -49,15 +49,15 @@ export default async function SlugPage({ params }: PageProps) {
             <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 border-b pb-6">
               {page.title}
             </h1>
-            <div 
+            <div
               className="prose prose-blue max-w-none prose-img:rounded-xl prose-headings:text-gray-800"
               dangerouslySetInnerHTML={{ __html: page.content || '' }}
             />
           </div>
         </main>
-        
+
         <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs mt-auto">
-          <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
+          <p>&copy; {new Date().getFullYear()} Công ty TNHH YUJI VINA (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
         </footer>
       </div>
     )

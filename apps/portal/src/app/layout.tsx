@@ -16,8 +16,8 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Portal Quản lý - Máy Công Nghiệp CNC",
-  description: "Hệ thống quản lý nội dung cho trang web Máy Công Nghiệp CNC",
+  title: "Portal Quản lý - YUJI VINA",
+  description: "Hệ thống quản lý nội dung cho trang web YUJI VINA",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
