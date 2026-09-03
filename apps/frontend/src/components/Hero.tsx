@@ -1,13 +1,17 @@
 import React from 'react';
 import { ArrowRight, Settings, CheckCircle, Clock, CreditCard, Phone } from 'lucide-react';
 
-export default function Hero() {
+interface HeroProps {
+  heroBannerUrl?: string;
+}
+
+export default function Hero({ heroBannerUrl }: HeroProps) {
   return (
     <div className="relative w-full min-h-[80vh] flex items-center text-white overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/hero.png" 
+          src={heroBannerUrl || "/hero.png"} 
           alt="CNC Machine Background" 
           className="w-full h-full object-cover object-center"
         />

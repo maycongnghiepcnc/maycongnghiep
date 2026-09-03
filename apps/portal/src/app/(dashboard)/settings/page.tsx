@@ -9,7 +9,8 @@ export default async function SettingsPage() {
     companyPhone, 
     companyEmail, 
     companyZalo, 
-    companyFb
+    companyFb,
+    homeHeroBanner
   ] = await Promise.all([
     getSetting('admin_email'),
     getSetting('company_name'),
@@ -17,7 +18,8 @@ export default async function SettingsPage() {
     getSetting('company_phone'),
     getSetting('company_email'),
     getSetting('company_zalo'),
-    getSetting('company_fb')
+    getSetting('company_fb'),
+    getSetting('home_hero_banner')
   ])
 
   const initialSettings = {
@@ -27,7 +29,8 @@ export default async function SettingsPage() {
     company_phone: companyPhone || '',
     company_email: companyEmail || '',
     company_zalo: companyZalo || '',
-    company_fb: companyFb || ''
+    company_fb: companyFb || '',
+    home_hero_banner: homeHeroBanner || ''
   }
 
   return (

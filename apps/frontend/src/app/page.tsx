@@ -1,17 +1,26 @@
 import React from 'react';
+import { supabase } from '@/utils/supabase';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import FeatureRow from '../components/FeatureRow';
 import FeaturedProducts from '../components/FeaturedProducts';
 import Industries from '../components/Industries';
 
-export default function Home() {
+export default async function Home() {
+  const { data } = await supabase
+    .from('system_settings')
+    .select('value')
+    .eq('key', 'home_hero_banner')
+    .single();
+
+  const homeHeroBanner = data?.value;
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans w-full">
       <Header />
       
       <main className="flex-grow w-full">
-        <Hero />
+        <Hero heroBannerUrl={homeHeroBanner} />
         <FeatureRow />
         <FeaturedProducts />
         <Industries />

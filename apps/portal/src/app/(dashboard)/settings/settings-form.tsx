@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Save, Loader2, Mail, Building2 } from 'lucide-react'
+import { Save, Loader2, Mail, Building2, Image as ImageIcon } from 'lucide-react'
 import { setSetting } from '@/app/actions/settings'
+import { ImageUpload } from '@/components/image-upload'
 import toast from 'react-hot-toast'
 
 interface SettingsFormProps {
@@ -118,6 +119,28 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
               onChange={(e) => handleChange('company_fb', e.target.value)}
               className="w-full bg-background border border-border/50 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
               placeholder="VD: https://facebook.com/..."
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Home Page Configuration */}
+      <div className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-6 shadow-sm">
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <ImageIcon className="w-5 h-5 text-accent" />
+          Cấu hình Trang chủ
+        </h3>
+        <div className="space-y-4 max-w-xl">
+          <div>
+            <label className="text-sm font-medium text-foreground block mb-2">
+              Banner chính (Hero Banner)
+            </label>
+            <p className="text-xs text-muted-foreground mb-4">
+              Khuyến nghị sử dụng ảnh kích thước lớn ngang (ví dụ: 1920x1080) để hiển thị đẹp nhất trên màn hình máy tính.
+            </p>
+            <ImageUpload 
+              value={settings['home_hero_banner'] ? [settings['home_hero_banner']] : []}
+              onChange={(urls) => handleChange('home_hero_banner', urls.length > 0 ? urls[urls.length - 1] : '')}
             />
           </div>
         </div>

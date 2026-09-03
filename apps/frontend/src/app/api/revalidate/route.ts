@@ -4,7 +4,9 @@ import { supabase } from '@/utils/supabase';
 
 export async function POST(req: NextRequest) {
   try {
-    const secret = req.nextUrl.searchParams.get('secret');
+    // Secure the webhook with a custom header
+    // Supabase can be configured to send this header
+    const secret = req.headers.get('x-webhook-secret');
     const expectedSecret = process.env.REVALIDATE_SECRET;
     
     if (expectedSecret && secret !== expectedSecret) {
@@ -82,6 +84,11 @@ export async function POST(req: NextRequest) {
       await processLink(record);
       if (type === 'UPDATE' || type === 'DELETE') {
         await processLink(old_record);
+      }
+    }
+    else if (table === 'system_settings') {
+      if (record?.key === 'home_hero_banner' || old_record?.key === 'home_hero_banner') {
+        revalidatePath('/');
       }
     }
 
