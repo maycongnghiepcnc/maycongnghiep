@@ -88,12 +88,18 @@ export default function HeaderClient({ categories = [] }: { categories?: Categor
               </div>
             </div>
           </div>
-          <a href="#" className="hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 border-transparent transition-colors">
-            GIẢI PHÁP <ChevronDown size={14} />
-          </a>
-          <a href="#" className="hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 border-transparent transition-colors">DỰ ÁN</a>
-          <a href="#" className="hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 border-transparent transition-colors">KIẾN THỨC</a>
-          <a href="#" className="hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 border-transparent transition-colors">VỀ CHÚNG TÔI</a>
+          <Link 
+            href="/tai-phan-mem" 
+            className={`hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 transition-colors ${pathname.startsWith('/tai-phan-mem') ? 'text-yellow-500 border-yellow-500' : 'border-transparent'}`}
+          >
+            TẢI PHẦN MỀM
+          </Link>
+          <Link 
+            href="/gioi-thieu-yuji-vina" 
+            className={`hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 transition-colors ${pathname.startsWith('/gioi-thieu-yuji-vina') ? 'text-yellow-500 border-yellow-500' : 'border-transparent'}`}
+          >
+            VỀ CHÚNG TÔI
+          </Link>
           <Link 
             href="/lien-he" 
             className={`hover:text-yellow-500 pb-1 flex items-center gap-1 border-b-2 transition-colors ${pathname.startsWith('/lien-he') ? 'text-yellow-500 border-yellow-500' : 'border-transparent'}`}
@@ -155,10 +161,20 @@ export default function HeaderClient({ categories = [] }: { categories?: Categor
               </div>
             </div>
 
-            <a href="#" className="hover:text-yellow-500 py-2">GIẢI PHÁP</a>
-            <a href="#" className="hover:text-yellow-500 py-2">DỰ ÁN</a>
-            <a href="#" className="hover:text-yellow-500 py-2">KIẾN THỨC</a>
-            <a href="#" className="hover:text-yellow-500 py-2">VỀ CHÚNG TÔI</a>
+            <Link 
+              href="/tai-phan-mem" 
+              className={`hover:text-yellow-500 py-2 ${pathname.startsWith('/tai-phan-mem') ? 'text-yellow-500' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              TẢI PHẦN MỀM
+            </Link>
+            <Link 
+              href="/gioi-thieu-yuji-vina" 
+              className={`hover:text-yellow-500 py-2 ${pathname.startsWith('/gioi-thieu-yuji-vina') ? 'text-yellow-500' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              VỀ CHÚNG TÔI
+            </Link>
             <Link 
               href="/lien-he" 
               className="hover:text-yellow-500 py-2"
