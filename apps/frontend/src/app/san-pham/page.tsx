@@ -26,7 +26,7 @@ export default async function ProductsPage() {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold">Tất cả Sản phẩm</h1>
           <p className="mt-4 text-gray-300 max-w-2xl">
-            Khám phá danh mục máy móc và thiết bị công nghiệp đa dạng, chất lượng cao từ MAYMOC PRO.
+            Khám phá danh mục máy móc và thiết bị công nghiệp đa dạng, chất lượng cao từ YUJI VINA.
           </p>
         </div>
       </div>
@@ -126,7 +126,7 @@ export default async function ProductsPage() {
       </div>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs mt-auto">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (MAYMOC PRO). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   );

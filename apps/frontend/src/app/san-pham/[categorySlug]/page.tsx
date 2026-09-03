@@ -81,7 +81,7 @@ export default async function CategoryPage({ params }: PageProps) {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold">{category.title}</h1>
           <p className="mt-4 text-gray-300 max-w-2xl">
-            {category.summary || `Khám phá các sản phẩm thuộc danh mục ${category.title} từ MAYMOC PRO.`}
+            {category.summary || `Khám phá các sản phẩm thuộc danh mục ${category.title} từ YUJI VINA.`}
           </p>
         </div>
       </div>
@@ -175,7 +175,7 @@ export default async function CategoryPage({ params }: PageProps) {
       </div>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs mt-auto">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (MAYMOC PRO). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   )

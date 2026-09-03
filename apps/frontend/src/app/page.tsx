@@ -54,7 +54,7 @@ export default async function Home() {
       </main>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (MAYMOC PRO). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} Công ty TNHH Máy Công Nghiệp CNC (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   );

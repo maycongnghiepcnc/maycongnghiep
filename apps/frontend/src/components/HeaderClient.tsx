@@ -46,16 +46,13 @@ export default function HeaderClient({ categories = [] }: { categories?: Categor
       {/* Navbar */}
       <div className="bg-[#0b1c3e] text-white px-4 sm:px-10 py-4 flex justify-between items-center">
         {/* Logo */}
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0b1c3e]">
-             {/* Placeholder Logo Icon */}
-             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-          </div>
-          <div>
-            <div className="font-bold text-xl tracking-wider">MAYMOC PRO</div>
-            <div className="text-[10px] text-gray-300">GIẢI PHÁP - UY TÍN - HIỆU QUẢ</div>
-          </div>
-        </div>
+        <Link href="/" className="flex items-center">
+          <img 
+            src="/logo.png" 
+            alt="YUJI VINA Logo" 
+            className="h-12 md:h-14 w-auto object-contain"
+          />
+        </Link>
 
         {/* Navigation - Desktop */}
         <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold">
