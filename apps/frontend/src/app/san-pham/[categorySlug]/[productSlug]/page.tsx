@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { supabase } from '@/utils/supabase'
 import Header from '@/components/Header'
+import ProductGallery from '@/components/ProductGallery'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 
@@ -115,40 +116,12 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-10 py-12">
         <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-10">
           
-          {/* Product Images Gallery */}
-          <div className="w-full lg:w-1/2">
-            <div className="aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden shadow-sm relative">
-              {product.images && product.images.length > 0 ? (
-                <img 
-                  src={product.images[0]} 
-                  alt={product.title} 
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                  Không có hình ảnh
-                </div>
-              )}
-              
-              {/* Feature Badge */}
-              {product.is_featured && (
-                <div className="absolute top-4 left-4 bg-blue-600 text-white font-semibold px-3 py-1 text-xs rounded-full shadow-lg">
-                  Nổi bật
-                </div>
-              )}
-            </div>
-            
-            {/* Thumbnails */}
-            {product.images && product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4 mt-4">
-                {product.images.map((img: string, idx: number) => (
-                  <div key={idx} className="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden border border-gray-200 cursor-pointer hover:border-orange-500 transition-colors">
-                    <img src={img} alt={`${product.title} - ảnh ${idx + 1}`} className="w-full h-full object-cover" />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* Product Images Gallery (Lightbox & Slideshow) */}
+          <ProductGallery 
+            images={product.images || []} 
+            title={product.title} 
+            isFeatured={product.is_featured} 
+          />
 
           {/* Product Details Info */}
           <div className="w-full lg:w-1/2 flex flex-col">
