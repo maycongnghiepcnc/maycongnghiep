@@ -175,7 +175,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
             {/* Action Buttons */}
             <div className="mt-8 flex gap-4">
               <Link
-                href="/lien-he"
+                href={`/lien-he?product=${encodeURIComponent(product.title)}${product.code ? encodeURIComponent(` - ${product.code}`) : ''}`}
                 className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-lg text-center transition-colors shadow-sm"
               >
                 Nhận báo giá

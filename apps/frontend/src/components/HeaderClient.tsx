@@ -10,9 +10,20 @@ interface Category {
   slug: string;
 }
 
-export default function HeaderClient({ categories = [] }: { categories?: Category[] }) {
+export default function HeaderClient({ 
+  categories = [],
+  settings = {}
+}: { 
+  categories?: Category[],
+  settings?: Record<string, string>
+}) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const address = settings.company_address || "1234 Quốc lộ 1A, P. An Phú Đông, Q.12, TP.HCM";
+  const phone = settings.company_phone || "0987 654 321";
+  const fbLink = settings.company_fb || "#";
+  const zaloLink = settings.company_zalo || "#";
 
   return (
     <header className="w-full">
@@ -21,26 +32,22 @@ export default function HeaderClient({ categories = [] }: { categories?: Categor
         <div className="flex gap-6">
           <div className="flex items-center gap-2">
             <MapPin size={14} />
-            <span className="hidden sm:inline">Showroom: 1234 Quốc lộ 1A, P. An Phú Đông, Q.12, TP.HCM</span>
-            <span className="sm:hidden">1234 QL1A, TP.HCM</span>
+            <span className="hidden sm:inline">Showroom: {address}</span>
+            <span className="sm:hidden text-[10px] sm:text-xs line-clamp-1">{address}</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock size={14} />
-            <span className="hidden sm:inline">Giờ làm việc: 08:00 - 17:30 (T2 - T7)</span>
-            <span className="sm:hidden">08:00 - 17:30</span>
+            <span className="hidden sm:inline">Hotline: {phone}</span>
+            <span className="sm:hidden">{phone}</span>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <a href="#" className="hover:text-white">
+          <a href={fbLink} target="_blank" rel="noopener noreferrer" className="hover:text-white">
             {/* Facebook icon fallback */}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
           </a>
-          <a href="#" className="hover:text-white">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33 2.78 2.78 0 001.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.33 29 29 0 00-.46-5.33zM9.75 15.02V8.48L15.5 11.75l-5.75 3.27z"/></svg>
-          </a>
-          <a href="#" className="hover:text-white">
-             {/* TikTok icon fallback */}
-             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.04-.1z"/></svg>
+          <a href={zaloLink} target="_blank" rel="noopener noreferrer" className="hover:text-white font-bold text-[10px]">
+            ZALO
           </a>
         </div>
       </div>

@@ -2,8 +2,23 @@ import Header from '@/components/Header'
 import { Toaster } from 'react-hot-toast'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import ContactForm from './ContactForm'
+import { supabase } from '@/utils/supabase'
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const { data: settingsData } = await supabase
+    .from('system_settings')
+    .select('key, value')
+    .in('key', ['company_address', 'company_phone', 'company_email']);
+    
+  const settings = (settingsData || []).reduce((acc: any, item) => {
+    acc[item.key] = item.value;
+    return acc;
+  }, {});
+
+  const address = settings.company_address || "123 Đường Công Nghiệp, Khu Công Nghiệp ABC, TP. Hồ Chí Minh";
+  const phone = settings.company_phone || "0987 654 321";
+  const email = settings.company_email || "contact@maycongnghiep.com";
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900 font-sans w-full">
       <Header />
@@ -33,7 +48,7 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium text-blue-200 mb-1">Địa chỉ</h3>
                     <p className="text-white/90 leading-relaxed">
-                      123 Đường Công Nghiệp, Khu Công Nghiệp ABC, TP. Hồ Chí Minh
+                      {address}
                     </p>
                   </div>
                 </div>
@@ -44,8 +59,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-blue-200 mb-1">Điện thoại</h3>
-                    <p className="text-white/90">0987 654 321</p>
-                    <p className="text-white/90">0123 456 789 (Hotline 24/7)</p>
+                    <p className="text-white/90 font-semibold">{phone}</p>
+                    <p className="text-white/90 text-sm mt-1">Hotline 24/7</p>
                   </div>
                 </div>
 
@@ -55,7 +70,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-medium text-blue-200 mb-1">Email</h3>
-                    <p className="text-white/90">contact@maycongnghiep.com</p>
+                    <p className="text-white/90">{email}</p>
                   </div>
                 </div>
               </div>

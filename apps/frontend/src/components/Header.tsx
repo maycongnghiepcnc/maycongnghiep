@@ -8,5 +8,20 @@ export default async function Header() {
     .select('title, slug')
     .order('sort_order', { ascending: true });
 
-  return <HeaderClient categories={categories || []} />;
+  const { data: settingsData } = await supabase
+    .from('system_settings')
+    .select('key, value')
+    .in('key', ['company_address', 'company_phone', 'company_fb', 'company_zalo']);
+    
+  const settings = (settingsData || []).reduce((acc: any, item) => {
+    acc[item.key] = item.value;
+    return acc;
+  }, {});
+
+  return (
+    <HeaderClient 
+      categories={categories || []} 
+      settings={settings}
+    />
+  );
 }

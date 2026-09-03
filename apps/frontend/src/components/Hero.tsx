@@ -6,9 +6,13 @@ interface HeroProps {
   mode?: string;
   landscapeUrl?: string;
   portraitUrl?: string;
+  settings?: Record<string, string>;
 }
 
-export default function Hero({ heroBannerUrl, mode = 'standard', landscapeUrl, portraitUrl }: HeroProps) {
+export default function Hero({ heroBannerUrl, mode = 'standard', landscapeUrl, portraitUrl, settings = {} }: HeroProps) {
+  const zaloLink = settings.company_zalo || "https://zalo.me/0987654321";
+  const phone = settings.company_phone || "0987 654 321";
+  const fbLink = settings.company_fb || "https://m.me/maycongnghiep";
   return (
     <>
       {mode === 'image_only' ? (
@@ -114,17 +118,36 @@ export default function Hero({ heroBannerUrl, mode = 'standard', landscapeUrl, p
       )}
 
       {/* Floating Action Buttons (Zalo, Phone, Messenger) */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-3 z-50">
-        <button className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600">
-          <span className="font-bold text-xs">Zalo</span>
-        </button>
-        <button className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700">
-          <Phone size={20} />
-        </button>
-        <button className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600">
-          {/* Messenger Icon Fallback */}
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.14 2 11.25c0 2.923 1.5 5.518 3.82 7.21v3.314c0 .408.455.65.803.42l3.414-2.223c.633.178 1.29.28 1.963.28 5.523 0 10-4.14 10-9.25S17.523 2 12 2zm1.09 11.23l-2.45-2.61-4.78 2.61 5.25-5.58 2.45 2.61 4.78-2.61-5.25 5.58z"/></svg>
-        </button>
+      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 z-50 items-end">
+        {/* Zalo */}
+        <a href={zaloLink} target="_blank" rel="noopener noreferrer" className="group flex items-center w-12 h-12 hover:w-[170px] bg-blue-500 text-white rounded-full shadow-xl hover:shadow-blue-500/50 hover:bg-blue-600 transition-all duration-300 overflow-hidden relative">
+          <div className="absolute left-5 whitespace-nowrap font-bold text-[15px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+            {phone}
+          </div>
+          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center absolute right-0 bg-blue-500 group-hover:bg-blue-600 rounded-full transition-colors z-10">
+            <span className="font-bold text-[11px] uppercase tracking-wider">Zalo</span>
+          </div>
+        </a>
+
+        {/* Phone */}
+        <a href={`tel:${phone.replace(/\D/g,'')}`} className="group flex items-center w-12 h-12 hover:w-[170px] bg-red-500 text-white rounded-full shadow-xl hover:shadow-red-500/50 hover:bg-red-600 transition-all duration-300 overflow-hidden relative">
+          <div className="absolute left-5 whitespace-nowrap font-bold text-[15px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+            {phone}
+          </div>
+          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center absolute right-0 bg-red-500 group-hover:bg-red-600 rounded-full transition-colors z-10">
+            <Phone size={20} className="group-hover:animate-bounce" />
+          </div>
+        </a>
+
+        {/* Messenger */}
+        <a href={fbLink} target="_blank" rel="noopener noreferrer" className="group flex items-center w-12 h-12 hover:w-[170px] bg-[#00B2FF] text-white rounded-full shadow-xl hover:shadow-[#00B2FF]/50 hover:bg-[#0099db] transition-all duration-300 overflow-hidden relative">
+          <div className="absolute left-5 whitespace-nowrap font-bold text-[14px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+            Chat ngay
+          </div>
+          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center absolute right-0 bg-[#00B2FF] group-hover:bg-[#0099db] rounded-full transition-colors z-10">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.14 2 11.25c0 2.923 1.5 5.518 3.82 7.21v3.314c0 .408.455.65.803.42l3.414-2.223c.633.178 1.29.28 1.963.28 5.523 0 10-4.14 10-9.25S17.523 2 12 2zm1.09 11.23l-2.45-2.61-4.78 2.61 5.25-5.58 2.45 2.61 4.78-2.61-5.25 5.58z"/></svg>
+          </div>
+        </a>
       </div>
     </>
   );

@@ -16,7 +16,10 @@ export default async function Home() {
       'home_hero_banner',
       'home_hero_mode',
       'home_hero_image_only_landscape',
-      'home_hero_image_only_portrait'
+      'home_hero_image_only_portrait',
+      'company_phone',
+      'company_zalo',
+      'company_fb'
     ]);
 
   const settingsMap = (settingsData || []).reduce((acc: any, item) => {
@@ -73,6 +76,7 @@ export default async function Home() {
           mode={homeHeroMode}
           landscapeUrl={homeHeroImageOnlyLandscape}
           portraitUrl={homeHeroImageOnlyPortrait}
+          settings={settingsMap}
         />
         <FeatureRow categories={featuredCategories || []} />
         <FeaturedProducts products={featuredProducts} />

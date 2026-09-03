@@ -1,12 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { submitContactForm } from '@/app/actions/contact'
 import toast from 'react-hot-toast'
 import { Send, Loader2 } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
-export default function ContactForm() {
+function ContactFormInner() {
   const [isPending, setIsPending] = useState(false)
+  const searchParams = useSearchParams()
+  const product = searchParams.get('product')
+  
+  const defaultMessage = product ? `Tôi muốn nhận báo giá cho sản phẩm: ${product}` : ''
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -71,6 +76,7 @@ export default function ContactForm() {
             id="message"
             name="message"
             rows={3}
+            defaultValue={defaultMessage}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all resize-none"
             placeholder="Bạn cần chúng tôi tư vấn về máy CNC nào?"
           ></textarea>
@@ -95,5 +101,13 @@ export default function ContactForm() {
         </button>
       </form>
     </div>
+  )
+}
+
+export default function ContactForm() {
+  return (
+    <Suspense fallback={<div className="p-8 md:p-10 flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-blue-500" /></div>}>
+      <ContactFormInner />
+    </Suspense>
   )
 }
