@@ -1,103 +1,99 @@
 import React from 'react';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowRight, Settings, Zap, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 
-export default function FeaturedProducts() {
-  const products = [
-    {
-      id: 1,
-      tag: 'BÁN CHẠY',
-      tagColor: 'bg-red-500',
-      title: 'Máy CNC Nesting 4 Đầu',
-      code: 'SM-1325-R4',
-      image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 2,
-      tag: 'BÁN CHẠY',
-      tagColor: 'bg-red-500',
-      title: 'Máy Dán Cạnh Tự Động',
-      code: 'SM-468JP',
-      image: 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 3,
-      tag: 'MỚI',
-      tagColor: 'bg-blue-600',
-      title: 'Máy Cắt Fiber Laser CNC',
-      code: 'LF-3015GA',
-      image: 'https://images.unsplash.com/photo-1504917595217-d4f500a0eb89?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-      id: 4,
-      tag: '',
-      title: 'Máy Tiện CNC',
-      code: 'CK-6132A',
-      image: 'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&q=80&w=400&h=300'
-    }
-  ];
+export interface FeaturedProduct {
+  id: string;
+  title: string;
+  slug: string;
+  image: string;
+  summary: string;
+  categorySlug: string;
+}
+
+export default function FeaturedProducts({ products = [] }: { products?: FeaturedProduct[] }) {
+  if (!products || products.length === 0) return null;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-10 py-8 relative">
-      <div className="flex justify-between items-end mb-8">
-        <h2 className="text-2xl font-bold uppercase text-gray-800 tracking-wide mx-auto lg:mx-0">
-          SẢN PHẨM NỔI BẬT
-        </h2>
-        <a href="#" className="hidden lg:flex items-center gap-1 text-sm font-semibold text-gray-600 hover:text-blue-600 transition">
-          Xem tất cả sản phẩm <ArrowRight size={14} />
-        </a>
-      </div>
+    <div className="w-full bg-[#050a15] py-20 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-900 to-transparent opacity-50"></div>
+      <div className="absolute -top-[300px] -right-[300px] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-0 left-[10%] w-[400px] h-[400px] bg-cyan-900/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-      {/* Carousel Navigation Buttons */}
-      <button className="absolute left-0 lg:-left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-gray-800 text-white rounded-full flex items-center justify-center shadow hover:bg-gray-700 z-10 hidden md:flex">
-        <ChevronLeft size={20} />
-      </button>
-      <button className="absolute right-0 lg:-right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-gray-800 text-white rounded-full flex items-center justify-center shadow hover:bg-gray-700 z-10 hidden md:flex">
-        <ChevronRight size={20} />
-      </button>
-
-      {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <div key={product.id} className="border rounded-lg p-4 bg-white flex flex-col hover:shadow-lg transition group">
-            {/* Tag */}
-            <div className="h-6">
-              {product.tag && (
-                <span className={`${product.tagColor} text-white text-[10px] font-bold px-2 py-1 rounded inline-block`}>
-                  {product.tag}
-                </span>
-              )}
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-10 relative z-10">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-white/10 pb-6">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Zap className="text-yellow-500 w-5 h-5 fill-yellow-500/20" />
+              <span className="text-blue-400 font-semibold tracking-wider text-sm uppercase">Công Nghệ Mới Nhất</span>
             </div>
-            
-            {/* Image */}
-            <div className="w-full h-40 mt-2 mb-4 overflow-hidden rounded flex items-center justify-center bg-gray-50">
-              <img 
-                src={product.image} 
-                alt={product.title} 
-                className="w-full h-full object-contain group-hover:scale-105 transition duration-300 mix-blend-multiply"
-              />
-            </div>
-
-            {/* Title & Code */}
-            <h3 className="font-bold text-sm text-gray-800 leading-tight mb-1">{product.title}</h3>
-            <p className="text-xs text-gray-500 font-medium mb-4">{product.code}</p>
-
-            {/* Actions */}
-            <div className="mt-auto flex justify-between gap-2">
-              <button className="flex-1 text-sm font-bold text-gray-700 hover:text-blue-600 transition text-left">
-                Liên hệ
-              </button>
-              <button className="flex-1 text-xs border border-gray-300 rounded px-2 py-1 text-center hover:bg-gray-50 transition font-medium">
-                Xem chi tiết
-              </button>
-            </div>
+            <h2 className="text-3xl md:text-4xl font-bold uppercase text-white tracking-wide">
+              SẢN PHẨM NỔI BẬT
+            </h2>
           </div>
-        ))}
-      </div>
-      
-      <div className="flex justify-center mt-6 lg:hidden">
-        <a href="#" className="flex items-center gap-1 text-sm font-semibold text-gray-600 hover:text-blue-600 transition">
-          Xem tất cả sản phẩm <ArrowRight size={14} />
-        </a>
+          <Link href="/san-pham" className="group flex items-center gap-2 text-sm font-semibold text-gray-400 hover:text-white transition-all bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-full backdrop-blur-sm border border-white/10">
+            Khám phá tất cả <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
+
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {products.map((product) => (
+            <Link 
+              href={`/san-pham/${product.categorySlug}/${product.slug}`} 
+              key={product.id} 
+              className="group relative flex flex-col bg-[#0b1221] border border-white/10 rounded-2xl overflow-hidden hover:border-blue-500/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] hover:-translate-y-1"
+            >
+              {/* Image Container */}
+              <div className="w-full aspect-[4/3] bg-[#0f172a] relative overflow-hidden flex items-center justify-center p-6">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0b1221] to-transparent opacity-60 z-10"></div>
+                <img 
+                  src={product.image} 
+                  alt={product.title} 
+                  className="w-full h-full object-contain group-hover:scale-110 transition duration-700 relative z-0 filter drop-shadow-2xl"
+                />
+                
+                {/* Badges */}
+                <div className="absolute top-4 left-4 z-20 flex gap-2">
+                  <span className="bg-yellow-500 text-[#0b1221] text-[10px] font-bold px-2.5 py-1 rounded-sm uppercase tracking-wider shadow-lg">
+                    Nổi bật
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-5 flex flex-col flex-grow relative z-20">
+                <h3 className="font-bold text-lg text-white leading-tight mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
+                  {product.title}
+                </h3>
+                
+                <p className="text-sm text-gray-400 mb-6 line-clamp-2 leading-relaxed">
+                  {product.summary || 'Giải pháp gia công CNC chất lượng cao, tối ưu hóa năng suất và chi phí cho xưởng của bạn.'}
+                </p>
+
+                {/* Footer specs / actions */}
+                <div className="mt-auto pt-4 border-t border-white/10 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" /> 
+                    <span>Chính hãng</span>
+                  </div>
+                  
+                  <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500 transition-colors">
+                    <ArrowUpRight className="w-4 h-4 text-blue-400 group-hover:text-white transition-colors" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Decorative corner accents */}
+              <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-transparent group-hover:border-blue-500 rounded-tl-xl transition-all duration-500 z-30"></div>
+              <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-transparent group-hover:border-blue-500 rounded-tr-xl transition-all duration-500 z-30"></div>
+            </Link>
+          ))}
+        </div>
+        
       </div>
     </div>
   );
