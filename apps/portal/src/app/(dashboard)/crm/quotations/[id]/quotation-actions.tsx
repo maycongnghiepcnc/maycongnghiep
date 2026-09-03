@@ -13,12 +13,12 @@ const PDFViewer = dynamic(() => import('@react-pdf/renderer').then(mod => mod.PD
   loading: () => <div className="h-[600px] w-full flex items-center justify-center bg-muted/20 border border-border/50 rounded-2xl">Đang tải bản xem trước...</div>
 })
 
-export default function QuotationActions({ quotation }: { quotation: any }) {
+export default function QuotationActions({ quotation, companySettings }: { quotation: any, companySettings: any }) {
   const [isSending, setIsSending] = useState(false)
   const [showSendModal, setShowSendModal] = useState(false)
   
   const [emailTo, setEmailTo] = useState(quotation.contact?.email || '')
-  const [subject, setSubject] = useState(`Báo giá ${quotation.code} từ Máy Công Nghiệp CNC`)
+  const [subject, setSubject] = useState(`Báo giá ${quotation.code} từ ${companySettings.name}`)
   const [message, setMessage] = useState(`Kính gửi ${quotation.contact?.name},\n\nChúng tôi xin gửi đính kèm file báo giá theo yêu cầu của Quý khách.`)
 
   const handleSendEmail = async (e: React.FormEvent) => {
@@ -27,7 +27,7 @@ export default function QuotationActions({ quotation }: { quotation: any }) {
     
     try {
       // 1. Generate PDF as Blob
-      const blob = await pdf(<QuotationPDF quotation={quotation} />).toBlob()
+      const blob = await pdf(<QuotationPDF quotation={quotation} companySettings={companySettings} />).toBlob()
       
       // 2. Convert Blob to Base64
       const reader = new FileReader()
@@ -77,7 +77,7 @@ export default function QuotationActions({ quotation }: { quotation: any }) {
       
       <div className="h-[600px] w-full bg-gray-500/10">
         <PDFViewer width="100%" height="100%" className="border-none">
-          <QuotationPDF quotation={quotation} />
+          <QuotationPDF quotation={quotation} companySettings={companySettings} />
         </PDFViewer>
       </div>
 

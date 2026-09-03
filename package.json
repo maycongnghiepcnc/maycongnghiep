@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "pnpm -r run dev",
     "build": "pnpm -r run build",
+    "build:isolated": "pnpm --filter portal run build:isolated",
     "lint": "pnpm -r run lint"
   },
   "devDependencies": {

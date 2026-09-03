@@ -135,18 +135,26 @@ const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount)
 }
 
-export default function QuotationPDF({ quotation }: { quotation: any }) {
+export default function QuotationPDF({ quotation, companySettings }: { quotation: any, companySettings?: any }) {
+  const companyInfo = {
+    name: companySettings?.name || 'MÁY CÔNG NGHIỆP CNC',
+    address: companySettings?.address || '123 Đường Công Nghiệp, KCN Tân Bình\nTP. Hồ Chí Minh, Việt Nam',
+    phone: companySettings?.phone || '0987 654 321',
+    email: companySettings?.email || 'contact@maycongnghiep.com'
+  }
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.companyInfo}>
-            <Text style={styles.companyName}>MÁY CÔNG NGHIỆP CNC</Text>
-            <Text>123 Đường Công Nghiệp, KCN Tân Bình</Text>
-            <Text>TP. Hồ Chí Minh, Việt Nam</Text>
-            <Text>Hotline: 0987 654 321</Text>
-            <Text>Email: contact@maycongnghiep.com</Text>
+            <Text style={styles.companyName}>{companyInfo.name}</Text>
+            {companyInfo.address.split('\n').map((line: string, i: number) => (
+              <Text key={i}>{line}</Text>
+            ))}
+            <Text>Hotline: {companyInfo.phone}</Text>
+            <Text>Email: {companyInfo.email}</Text>
           </View>
           <View style={styles.titleArea}>
             <Text style={styles.title}>BÁO GIÁ</Text>

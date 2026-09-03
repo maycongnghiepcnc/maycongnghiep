@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 4001",
     "build": "next build",
+    "build:isolated": "ISOLATED_BUILD=true next build",
     "start": "next start",
     "lint": "eslint"
   },

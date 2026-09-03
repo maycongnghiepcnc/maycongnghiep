@@ -1,4 +1,5 @@
 import { getQuotationById } from '@/app/actions/quotations'
+import { getSetting } from '@/app/actions/settings'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, Building2, Mail, Phone, MapPin } from 'lucide-react'
@@ -7,10 +8,24 @@ import QuotationActions from './quotation-actions'
 export default async function QuotationDetailPage({ params }: { params: { id: string } }) {
   // Fix Next.js 15+ async params
   const id = (await params).id
-  const quote = await getQuotationById(id)
+  
+  const [quote, companyName, companyAddress, companyPhone, companyEmail] = await Promise.all([
+    getQuotationById(id),
+    getSetting('company_name'),
+    getSetting('company_address'),
+    getSetting('company_phone'),
+    getSetting('company_email')
+  ])
 
   if (!quote) {
     notFound()
+  }
+
+  const companySettings = {
+    name: companyName || 'MÁY CÔNG NGHIỆP CNC',
+    address: companyAddress || '123 Đường Công Nghiệp, KCN Tân Bình\nTP. Hồ Chí Minh, Việt Nam',
+    phone: companyPhone || '0987 654 321',
+    email: companyEmail || 'contact@maycongnghiep.com'
   }
 
   return (
@@ -114,7 +129,7 @@ export default async function QuotationDetailPage({ params }: { params: { id: st
 
         {/* PDF Preview & Actions */}
         <div className="lg:col-span-2">
-          <QuotationActions quotation={quote} />
+          <QuotationActions quotation={quote} companySettings={companySettings} />
         </div>
       </div>
     </div>
