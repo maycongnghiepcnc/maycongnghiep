@@ -6,6 +6,7 @@ import { ArrowLeft, Save, Loader2, Check } from 'lucide-react'
 import { ImageUpload } from '@/components/image-upload'
 import { RichTextEditor } from '@/components/rich-text-editor'
 import { createProduct, updateProduct } from '@/app/actions/products'
+import { slugify } from '@/utils/slugify'
 
 interface ProductFormProps {
   categories: any[]
@@ -20,8 +21,13 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
     initialData?.product_categories?.map((pc: any) => pc.category_id) || []
   )
   const [error, setError] = useState<string | null>(null)
+  const [title, setTitle] = useState(initialData?.title || '')
   
   const isEditing = !!initialData
+
+  const displaySlug = isEditing && initialData?.slug && initialData.title === title 
+    ? initialData.slug 
+    : slugify(title)
 
   const toggleCategory = (id: string) => {
     setSelectedCategoryIds(prev => 
@@ -93,10 +99,17 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
                 id="title"
                 name="title"
                 required
-                defaultValue={initialData?.title}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
                 className="w-full bg-background border border-border/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
                 placeholder="VD: Máy Tiện CNC Đa Trục"
               />
+              <div className="text-xs text-muted-foreground mt-1.5 flex items-center">
+                <span>Đường dẫn (Slug): </span>
+                <span className="ml-1 px-2 py-0.5 bg-accent/10 text-accent rounded font-mono truncate">
+                  {displaySlug || 'se-tu-dong-tao'}
+                </span>
+              </div>
             </div>
 
             {/* Price */}
@@ -215,6 +228,24 @@ export function ProductForm({ categories, initialData }: ProductFormProps) {
               className="w-full bg-background border border-border/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
               placeholder="VD: máy phay, cnc, công nghiệp..."
             />
+          </div>
+
+          {/* Sort Order */}
+          <div className="space-y-2">
+            <label htmlFor="sort_order" className="text-sm font-medium text-foreground">
+              Thứ tự hiển thị
+            </label>
+            <input
+              id="sort_order"
+              name="sort_order"
+              type="number"
+              defaultValue={initialData?.sort_order ?? 0}
+              className="w-full bg-background border border-border/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
+              placeholder="0"
+            />
+            <p className="text-xs text-muted-foreground mt-2">
+              Số nhỏ hơn sẽ hiển thị trước. Mặc định là 0.
+            </p>
           </div>
 
           {/* Summary */}

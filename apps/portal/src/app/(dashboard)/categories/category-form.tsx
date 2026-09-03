@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft, Save, Loader2 } from 'lucide-react'
 import { ImageUpload } from '@/components/image-upload'
 import { createCategory, updateCategory } from '@/app/actions/categories'
+import { slugify } from '@/utils/slugify'
 
 interface CategoryFormProps {
   initialData?: {
@@ -12,15 +13,24 @@ interface CategoryFormProps {
     title: string
     summary: string | null
     image_url: string | null
+    hero_banner?: string | null
+    sort_order?: number
+    slug?: string
   }
 }
 
 export function CategoryForm({ initialData }: CategoryFormProps) {
   const [isPending, setIsPending] = useState(false)
   const [imageUrls, setImageUrls] = useState<string[]>(initialData?.image_url ? [initialData.image_url] : [])
+  const [heroBannerUrls, setHeroBannerUrls] = useState<string[]>(initialData?.hero_banner ? [initialData.hero_banner] : [])
   const [error, setError] = useState<string | null>(null)
+  const [title, setTitle] = useState(initialData?.title || '')
   
   const isEditing = !!initialData
+  
+  const displaySlug = isEditing && initialData?.slug && initialData.title === title 
+    ? initialData.slug 
+    : slugify(title)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -29,6 +39,7 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
     
     const formData = new FormData(e.currentTarget)
     formData.append('image_urls', JSON.stringify(imageUrls))
+    formData.append('hero_banner_urls', JSON.stringify(heroBannerUrls))
     
     try {
       const res = isEditing 
@@ -81,10 +92,17 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
               id="title"
               name="title"
               required
-              defaultValue={initialData?.title}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               className="w-full bg-background border border-border/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
               placeholder="VD: Máy Phay CNC"
             />
+            <div className="text-xs text-muted-foreground mt-1.5 flex items-center">
+              <span>Đường dẫn (Slug): </span>
+              <span className="ml-1 px-2 py-0.5 bg-accent/10 text-accent rounded font-mono truncate">
+                {displaySlug || 'se-tu-dong-tao'}
+              </span>
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -111,6 +129,36 @@ export function CategoryForm({ initialData }: CategoryFormProps) {
             />
             <p className="text-xs text-muted-foreground mt-2">
               Chỉ được phép tải lên 1 hình ảnh làm đại diện cho danh mục.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">
+              Hero Banner (Hình nền lớn trên cùng)
+            </label>
+            <ImageUpload 
+              value={heroBannerUrls}
+              onChange={(urls) => setHeroBannerUrls(urls.slice(0, 1))} // Only allow 1 image for hero banner
+            />
+            <p className="text-xs text-muted-foreground mt-2">
+              Hình ảnh sẽ hiển thị tràn viền ở phía trên cùng trang danh mục.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="sort_order" className="text-sm font-medium text-foreground">
+              Thứ tự hiển thị
+            </label>
+            <input
+              id="sort_order"
+              name="sort_order"
+              type="number"
+              defaultValue={initialData?.sort_order ?? 0}
+              className="w-full bg-background border border-border/50 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
+              placeholder="0"
+            />
+            <p className="text-xs text-muted-foreground mt-2">
+              Số nhỏ hơn sẽ hiển thị trước. Mặc định là 0.
             </p>
           </div>
 

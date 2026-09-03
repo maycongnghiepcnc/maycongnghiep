@@ -1,7 +1,12 @@
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { MapPin, Clock, Phone, Search, Menu } from 'lucide-react';
 
 export default function Header() {
+  const pathname = usePathname();
   return (
     <header className="w-full">
       {/* Top Bar */}
@@ -49,13 +54,23 @@ export default function Header() {
 
         {/* Navigation - Desktop */}
         <nav className="hidden lg:flex items-center gap-6 text-sm font-semibold">
-          <a href="#" className="hover:text-yellow-500 border-b-2 border-yellow-500 pb-1">TRANG CHỦ</a>
-          <a href="#" className="hover:text-yellow-500 flex items-center gap-1">SẢN PHẨM <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg></a>
+          <Link 
+            href="/" 
+            className={`hover:text-yellow-500 pb-1 ${pathname === '/' ? 'text-yellow-500 border-b-2 border-yellow-500' : ''}`}
+          >
+            TRANG CHỦ
+          </Link>
+          <Link 
+            href="/san-pham" 
+            className={`hover:text-yellow-500 pb-1 flex items-center gap-1 ${pathname.startsWith('/san-pham') ? 'text-yellow-500 border-b-2 border-yellow-500' : ''}`}
+          >
+            SẢN PHẨM <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
+          </Link>
           <a href="#" className="hover:text-yellow-500 flex items-center gap-1">GIẢI PHÁP <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg></a>
           <a href="#" className="hover:text-yellow-500">DỰ ÁN</a>
           <a href="#" className="hover:text-yellow-500">KIẾN THỨC</a>
           <a href="#" className="hover:text-yellow-500">VỀ CHÚNG TÔI</a>
-          <a href="/lien-he" className="hover:text-yellow-500">LIÊN HỆ</a>
+          <Link href="/lien-he" className="hover:text-yellow-500">LIÊN HỆ</Link>
         </nav>
 
         {/* CTA & Search */}

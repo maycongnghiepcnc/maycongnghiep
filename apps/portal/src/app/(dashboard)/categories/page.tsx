@@ -31,13 +31,14 @@ export default async function CategoriesPage() {
                 <th className="px-6 py-4 font-medium">Hình ảnh</th>
                 <th className="px-6 py-4 font-medium">Tên danh mục</th>
                 <th className="px-6 py-4 font-medium">Mô tả</th>
+                <th className="px-6 py-4 font-medium text-center">Thứ tự</th>
                 <th className="px-6 py-4 font-medium text-right">Thao tác</th>
               </tr>
             </thead>
             <tbody>
               {categories.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground">
+                  <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
                     Chưa có danh mục nào. Hãy tạo danh mục đầu tiên!
                   </td>
                 </tr>
@@ -63,6 +64,11 @@ export default async function CategoriesPage() {
                     </td>
                     <td className="px-6 py-4 text-muted-foreground max-w-md truncate">
                       {category.summary || '—'}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground border border-border/50">
+                        {category.sort_order ?? 0}
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">

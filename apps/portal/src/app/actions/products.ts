@@ -3,6 +3,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { slugify } from '@/utils/slugify'
 
 export async function getProducts() {
   const supabase = await createClient()
@@ -17,6 +18,7 @@ export async function getProducts() {
         )
       )
     `)
+    .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -48,6 +50,9 @@ export async function createProduct(formData: FormData) {
   
   const price = priceString ? parseFloat(priceString) : null
   
+  const sort_order_str = formData.get('sort_order') as string
+  const sort_order = sort_order_str ? parseInt(sort_order_str, 10) : 0
+  
   const imageUrlsString = formData.get('image_urls') as string
   const images = imageUrlsString ? JSON.parse(imageUrlsString) : []
   
@@ -61,31 +66,55 @@ export async function createProduct(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   const userId = user?.id
 
-  // 1. Insert Product
-  const { data: product, error: productError } = await supabase
-    .from('products')
-    .insert([{ 
-      title, 
-      summary, 
-      content, 
-      price, 
-      video_url, 
-      images,
-      code,
-      serial_number,
-      tags,
-      is_featured,
-      meta_title,
-      meta_description,
-      created_by: userId,
-      updated_by: userId
-    }])
-    .select()
-    .single()
+  const slug = slugify(title)
+  let finalSlug = slug
+  let counter = 1
+  let success = false
+  let product = null
+  let errorMsg = 'Không thể tạo sản phẩm'
 
-  if (productError || !product) {
-    console.error('Error creating product:', productError)
-    return { error: 'Không thể tạo sản phẩm' }
+  // 1. Insert Product
+  while (!success && counter < 10) {
+    const { data: insertedProduct, error: productError } = await supabase
+      .from('products')
+      .insert([{ 
+        title, 
+        summary, 
+        content, 
+        price, 
+        video_url, 
+        images,
+        code,
+        serial_number,
+        tags,
+        is_featured,
+        meta_title,
+        meta_description,
+        sort_order,
+        slug: finalSlug,
+        created_by: userId,
+        updated_by: userId
+      }])
+      .select()
+      .single()
+
+    if (productError) {
+      if (productError.code === '23505') { // unique violation
+        finalSlug = `${slug}-${counter}`
+        counter++
+      } else {
+        console.error('Error creating product:', productError)
+        errorMsg = productError.message
+        break
+      }
+    } else {
+      product = insertedProduct
+      success = true
+    }
+  }
+
+  if (!success || !product) {
+    return { error: errorMsg }
   }
 
   // 2. Insert Categories mappings
@@ -162,6 +191,9 @@ export async function updateProduct(id: string, formData: FormData) {
   const is_featured = formData.get('is_featured') === 'on'
   
   const price = priceString ? parseFloat(priceString) : null
+
+  const sort_order_str = formData.get('sort_order') as string
+  const sort_order = sort_order_str ? parseInt(sort_order_str, 10) : 0
   
   const imageUrlsString = formData.get('image_urls') as string
   const images = imageUrlsString ? JSON.parse(imageUrlsString) : []
@@ -176,29 +208,51 @@ export async function updateProduct(id: string, formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   const userId = user?.id
 
-  // 1. Update Product
-  const { error: productError } = await supabase
-    .from('products')
-    .update({ 
-      title, 
-      summary, 
-      content, 
-      price, 
-      video_url, 
-      images,
-      code,
-      serial_number,
-      tags,
-      is_featured,
-      meta_title,
-      meta_description,
-      updated_by: userId
-    })
-    .eq('id', id)
+  const slug = slugify(title)
+  let finalSlug = slug
+  let counter = 1
+  let success = false
+  let errorMsg = 'Không thể cập nhật sản phẩm'
 
-  if (productError) {
-    console.error('Error updating product:', productError)
-    return { error: 'Không thể cập nhật sản phẩm' }
+  // 1. Update Product
+  while (!success && counter < 10) {
+    const { error: productError } = await supabase
+      .from('products')
+      .update({ 
+        title, 
+        summary, 
+        content, 
+        price, 
+        video_url, 
+        images,
+        code,
+        serial_number,
+        tags,
+        is_featured,
+        meta_title,
+        meta_description,
+        sort_order,
+        slug: finalSlug,
+        updated_by: userId
+      })
+      .eq('id', id)
+
+    if (productError) {
+      if (productError.code === '23505') { // unique violation
+        finalSlug = `${slug}-${counter}`
+        counter++
+      } else {
+        console.error('Error updating product:', productError)
+        errorMsg = productError.message
+        break
+      }
+    } else {
+      success = true
+    }
+  }
+
+  if (!success) {
+    return { error: errorMsg }
   }
 
   // 2. Update Categories mappings
