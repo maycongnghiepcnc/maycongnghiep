@@ -32,3 +32,35 @@ export async function login(formData: FormData) {
   console.log('Redirecting with success message');
   redirect('/login?message=' + encodeURIComponent('Vui lòng kiểm tra email của bạn để lấy liên kết đăng nhập!'))
 }
+
+export async function loginWithPassword(formData: FormData) {
+  const supabase = await createClient()
+
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
+
+  if (error) {
+    redirect('/login?message=' + encodeURIComponent('Đăng nhập thất bại: ' + error.message))
+  }
+
+  // Check role
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) {
+    const { data: roleData } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single()
+
+    if (!roleData || roleData.role === 'pending') {
+      redirect('/pending')
+    }
+  }
+
+  redirect('/')
+}

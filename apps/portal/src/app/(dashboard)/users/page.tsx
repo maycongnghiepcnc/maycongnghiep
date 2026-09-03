@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import { ShieldCheck, User as UserIcon } from 'lucide-react'
 
 export const metadata = {
-  title: 'Quản lý người dùng - CNC Portal',
+  title: 'Quản lý người dùng - Admin Portal',
 }
 
 export default async function UsersPage() {
@@ -72,7 +72,7 @@ export default async function UsersPage() {
             </div>
           )}
         </div>
-        
+
         <div>
           <InviteForm />
         </div>

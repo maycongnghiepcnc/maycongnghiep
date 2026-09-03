@@ -47,14 +47,14 @@ export default async function PendingPage() {
         <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center border border-primary/50 text-accent mb-6">
           <Clock className="w-8 h-8 animate-pulse" />
         </div>
-        
+
         <h1 className="text-2xl font-bold tracking-tight text-foreground mb-2">Chờ phê duyệt</h1>
         <p className="text-muted-foreground mb-8">
           Tài khoản <strong>{user.email}</strong> của bạn chưa được cấp quyền truy cập. Vui lòng liên hệ với quản trị viên hệ thống (Admin) để được phê duyệt.
         </p>
 
         <form action={signOut} className="w-full">
-          <button 
+          <button
             type="submit"
             className="w-full flex items-center justify-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 py-3 px-4 rounded-xl font-medium transition-all group"
           >
@@ -65,7 +65,7 @@ export default async function PendingPage() {
 
         <div className="mt-6 pt-6 border-t border-border/50 w-full flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <Factory className="w-4 h-4" />
-          <span>CNC Portal System</span>
+          <span>Admin Portal System</span>
         </div>
       </div>
     </div>
