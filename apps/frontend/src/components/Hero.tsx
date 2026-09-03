@@ -3,84 +3,78 @@ import { ArrowRight, Settings, CheckCircle, Clock, CreditCard, Phone } from 'luc
 
 export default function Hero() {
   return (
-    <div className="relative w-full bg-[#0b1c3e] text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-10 py-16 flex flex-col md:flex-row items-center relative z-10 pb-40">
+    <div className="relative w-full min-h-[80vh] flex items-center text-white overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/hero.png" 
+          alt="CNC Machine Background" 
+          className="w-full h-full object-cover object-center"
+        />
+        {/* Overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1c3e]/95 via-[#0b1c3e]/80 to-black/40"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-10 py-24 relative z-10 w-full">
         
-        {/* Left Content */}
-        <div className="w-full md:w-[55%] flex flex-col gap-6 relative z-20">
+        {/* Content */}
+        <div className="w-full md:w-[65%] lg:w-[60%] flex flex-col gap-6 relative z-20">
           <div className="text-sm uppercase tracking-wider font-semibold text-gray-300">
             CUNG CẤP MÁY MÓC & GIẢI PHÁP SẢN XUẤT
           </div>
           
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight drop-shadow-lg">
             NỘI THẤT - CƠ KHÍ <br />
             <span className="text-orange-500">QUẢNG CÁO</span>
           </h1>
           
-          <div className="text-gray-300 max-w-lg mt-2">
+          <div className="text-gray-200 max-w-lg mt-2 text-lg drop-shadow-md">
             <p>Tư vấn giải pháp - Cung cấp máy móc chính hãng - Hỗ trợ kỹ thuật trọn đời</p>
             <p className="mt-1">Đồng hành cùng xưởng sản xuất Việt nâng cao năng suất và lợi nhuận.</p>
           </div>
 
           {/* Features Grid in Hero */}
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <div className="flex items-start gap-3">
-              <div className="p-2 border border-gray-600 rounded-md"><Settings size={20} className="text-gray-300" /></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+            <div className="flex items-start gap-4">
+              <div className="p-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl"><Settings size={22} className="text-white" /></div>
               <div>
-                <div className="font-semibold text-sm">TƯ VẤN GIẢI PHÁP</div>
-                <div className="text-xs text-gray-400 mt-1">Phù hợp quy mô <br/>và ngân sách</div>
+                <div className="font-bold text-sm tracking-wide">TƯ VẤN GIẢI PHÁP</div>
+                <div className="text-xs text-gray-300 mt-1.5 leading-relaxed">Phù hợp quy mô <br/>và ngân sách</div>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="p-2 border border-gray-600 rounded-md"><CheckCircle size={20} className="text-gray-300" /></div>
+            <div className="flex items-start gap-4">
+              <div className="p-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl"><CheckCircle size={22} className="text-white" /></div>
               <div>
-                <div className="font-semibold text-sm">MÁY MÓC CHÍNH HÃNG</div>
-                <div className="text-xs text-gray-400 mt-1">Chất lượng - Bền bỉ <br/>Hiệu quả</div>
+                <div className="font-bold text-sm tracking-wide">MÁY MÓC CHÍNH HÃNG</div>
+                <div className="text-xs text-gray-300 mt-1.5 leading-relaxed">Chất lượng - Bền bỉ <br/>Hiệu quả</div>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="p-2 border border-gray-600 rounded-md"><Clock size={20} className="text-gray-300" /></div>
+            <div className="flex items-start gap-4">
+              <div className="p-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl"><Clock size={22} className="text-white" /></div>
               <div>
-                <div className="font-semibold text-sm">HỖ TRỢ KỸ THUẬT 24/7</div>
-                <div className="text-xs text-gray-400 mt-1">Bảo hành - Bảo trì tận nơi <br/>Nhanh chóng</div>
+                <div className="font-bold text-sm tracking-wide">HỖ TRỢ KỸ THUẬT 24/7</div>
+                <div className="text-xs text-gray-300 mt-1.5 leading-relaxed">Bảo hành - Bảo trì tận nơi <br/>Nhanh chóng</div>
               </div>
             </div>
-            <div className="flex items-start gap-3">
-              <div className="p-2 border border-gray-600 rounded-md"><CreditCard size={20} className="text-gray-300" /></div>
+            <div className="flex items-start gap-4">
+              <div className="p-2.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg shadow-xl"><CreditCard size={22} className="text-white" /></div>
               <div>
-                <div className="font-semibold text-sm">TRẢ GÓP LINH HOẠT</div>
-                <div className="text-xs text-gray-400 mt-1">Hỗ trợ trả góp <br/>thủ tục đơn giản</div>
+                <div className="font-bold text-sm tracking-wide">TRẢ GÓP LINH HOẠT</div>
+                <div className="text-xs text-gray-300 mt-1.5 leading-relaxed">Hỗ trợ trả góp <br/>thủ tục đơn giản</div>
               </div>
             </div>
           </div>
 
           {/* Buttons */}
-          <div className="flex flex-wrap gap-4 mt-8">
-            <button className="bg-yellow-500 text-[#0b1c3e] font-bold px-6 py-3 flex items-center gap-2 hover:bg-yellow-400 transition">
-              XEM SẢN PHẨM <ArrowRight size={18} />
+          <div className="flex flex-wrap gap-4 mt-10">
+            <button className="bg-yellow-500 text-[#0b1c3e] font-bold px-8 py-4 rounded-md shadow-xl flex items-center gap-2 hover:bg-yellow-400 hover:scale-105 transition-all duration-300">
+              XEM SẢN PHẨM <ArrowRight size={20} />
             </button>
-            <button className="border border-gray-400 text-white font-bold px-6 py-3 flex items-center gap-2 hover:bg-white/10 transition">
-              TƯ VẤN GIẢI PHÁP <ArrowRight size={18} />
+            <button className="bg-white/10 backdrop-blur-md border border-white/30 text-white font-bold px-8 py-4 rounded-md shadow-xl flex items-center gap-2 hover:bg-white/20 transition-all duration-300">
+              TƯ VẤN GIẢI PHÁP <ArrowRight size={20} />
             </button>
           </div>
         </div>
-
-        {/* Right Image / Graphic */}
-        <div className="w-full md:w-[45%] mt-10 md:mt-0 relative flex justify-end">
-          {/* We will use a placeholder image resembling a large CNC machine */}
-          <div className="w-full max-w-lg aspect-square sm:aspect-video md:aspect-square bg-gradient-to-tr from-gray-800 to-gray-600 rounded-lg shadow-2xl overflow-hidden relative border-4 border-gray-700">
-            <img 
-              src="https://images.unsplash.com/photo-1565514020179-026b92b84bb6?auto=format&fit=crop&q=80&w=1000" 
-              alt="CNC Machine" 
-              className="w-full h-full object-cover mix-blend-overlay opacity-80"
-            />
-            <div className="absolute inset-0 bg-blue-900/20"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white font-bold text-2xl tracking-widest bg-black/50 px-4 py-2 border border-white/20">
-              MAYMOC PRO
-            </div>
-          </div>
-        </div>
-
       </div>
 
       {/* Floating Action Buttons (Zalo, Phone, Messenger) */}
