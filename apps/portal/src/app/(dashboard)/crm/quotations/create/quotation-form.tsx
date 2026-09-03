@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { createQuotation } from '@/app/actions/quotations'
+import { createQuotation, updateQuotation } from '@/app/actions/quotations'
 import { Plus, Trash2, CheckCircle2, Save, X, Search } from 'lucide-react'
 
 export default function QuotationForm({
@@ -10,27 +10,38 @@ export default function QuotationForm({
   opportunities,
   products,
   initialContactId,
-  initialOpportunityId
+  initialOpportunityId,
+  initialData // For editing
 }: {
   contacts: any[]
   opportunities: any[]
   products: any[]
   initialContactId?: string
   initialOpportunityId?: string
+  initialData?: any
 }) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
   // Form State
-  const [contactId, setContactId] = useState(initialContactId || '')
-  const [opportunityId, setOpportunityId] = useState(initialOpportunityId || '')
-  const [notes, setNotes] = useState('')
-  const [validUntil, setValidUntil] = useState('')
-  const [overallDiscount, setOverallDiscount] = useState(0)
+  const [contactId, setContactId] = useState(initialData?.contact_id || initialContactId || '')
+  const [opportunityId, setOpportunityId] = useState(initialData?.opportunity_id || initialOpportunityId || '')
+  const [notes, setNotes] = useState(initialData?.notes || '')
+  const [validUntil, setValidUntil] = useState(initialData?.valid_until ? new Date(initialData.valid_until).toISOString().split('T')[0] : '')
+  const [overallDiscount, setOverallDiscount] = useState(initialData?.discount || 0)
 
   // Items State
-  const [items, setItems] = useState<any[]>([])
+  const [items, setItems] = useState<any[]>(
+    initialData?.items?.map((i: any) => ({
+      product_id: i.product?.id || i.product_id,
+      product_name: i.product?.title || 'Sản phẩm',
+      quantity: i.quantity,
+      unit_price: i.unit_price,
+      discount: i.discount,
+      total_price: i.total_price
+    })) || []
+  )
   const [searchTerm, setSearchTerm] = useState('')
   const [isProductListOpen, setIsProductListOpen] = useState(false)
 
@@ -94,7 +105,7 @@ export default function QuotationForm({
     setError('')
 
     try {
-      const res = await createQuotation({
+      const payload = {
         contact_id: contactId,
         opportunity_id: opportunityId || undefined,
         subtotal,
@@ -104,9 +115,18 @@ export default function QuotationForm({
         notes,
         valid_until: validUntil || undefined,
         items
-      })
+      }
       
-      router.push(`/crm/quotations/${res.id}`)
+      let resId = ''
+      if (initialData?.id) {
+        await updateQuotation(initialData.id, payload)
+        resId = initialData.id
+      } else {
+        const res = await createQuotation(payload)
+        resId = res.id
+      }
+      
+      router.push(`/crm/quotations/${resId}`)
     } catch (err: any) {
       setError(err.message || 'Có lỗi xảy ra khi tạo báo giá')
       setIsSubmitting(false)

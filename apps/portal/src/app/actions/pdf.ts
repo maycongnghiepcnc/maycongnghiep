@@ -2,8 +2,7 @@
 
 import { Resend } from 'resend'
 import { updateQuotationStatus } from './quotations'
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@/utils/supabase/server'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -16,7 +15,7 @@ export async function sendQuotationEmail(
   fileName: string
 ) {
   try {
-    const supabase = createServerActionClient({ cookies })
+    const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     
     if (!user) {

@@ -48,6 +48,12 @@ export default async function QuotationDetailPage({ params }: { params: { id: st
               )}
             </div>
           </div>
+          <Link
+            href={`/crm/quotations/edit/${quote.id}`}
+            className="flex items-center gap-2 bg-background border border-border text-foreground px-4 py-2 rounded-xl text-sm font-medium hover:bg-muted transition-colors shadow-sm"
+          >
+            Sửa báo giá
+          </Link>
         </div>
       </div>
 

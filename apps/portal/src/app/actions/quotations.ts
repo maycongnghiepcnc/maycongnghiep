@@ -1,7 +1,6 @@
 'use server'
 
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export type QuotationItem = {
@@ -23,7 +22,7 @@ export async function createQuotation(data: {
   valid_until?: string
   items: QuotationItem[]
 }) {
-  const supabase = createServerActionClient({ cookies })
+  const supabase = await createClient()
   const { data: userData, error: userError } = await supabase.auth.getUser()
 
   if (userError || !userData?.user) {
@@ -83,8 +82,74 @@ export async function createQuotation(data: {
   return { id: quotation.id, code: quotation.code }
 }
 
+export async function updateQuotation(id: string, data: {
+  contact_id: string
+  opportunity_id?: string
+  subtotal: number
+  discount: number
+  tax: number
+  total: number
+  notes?: string
+  valid_until?: string
+  items: QuotationItem[]
+}) {
+  const supabase = await createClient()
+  const { data: userData, error: userError } = await supabase.auth.getUser()
+
+  if (userError || !userData?.user) {
+    throw new Error('Not authenticated')
+  }
+
+  // 1. Update Quotation
+  const { error: qError } = await supabase
+    .from('crm_quotations')
+    .update({
+      contact_id: data.contact_id,
+      opportunity_id: data.opportunity_id || null,
+      subtotal: data.subtotal,
+      discount: data.discount,
+      tax: data.tax,
+      total: data.total,
+      notes: data.notes || '',
+      valid_until: data.valid_until || null,
+      updated_by: userData.user.id
+    })
+    .eq('id', id)
+
+  if (qError) {
+    console.error('Update quotation error:', qError)
+    throw new Error('Could not update quotation')
+  }
+
+  // 2. Delete Old Items
+  await supabase.from('crm_quotation_items').delete().eq('quotation_id', id)
+
+  // 3. Insert New Items
+  const itemsToInsert = data.items.map(item => ({
+    quotation_id: id,
+    product_id: item.product_id,
+    quantity: item.quantity,
+    unit_price: item.unit_price,
+    discount: item.discount,
+    total_price: item.total_price
+  }))
+
+  const { error: itemsError } = await supabase
+    .from('crm_quotation_items')
+    .insert(itemsToInsert)
+
+  if (itemsError) {
+    console.error('Update quotation items error:', itemsError)
+    throw new Error('Could not update quotation items')
+  }
+
+  revalidatePath(`/crm/quotations/${id}`)
+  revalidatePath('/crm/quotations')
+  return { id }
+}
+
 export async function getQuotations() {
-  const supabase = createServerActionClient({ cookies })
+  const supabase = await createClient()
   
   const { data, error } = await supabase
     .from('crm_quotations')
@@ -104,7 +169,7 @@ export async function getQuotations() {
 }
 
 export async function getQuotationById(id: string) {
-  const supabase = createServerActionClient({ cookies })
+  const supabase = await createClient()
   
   const { data, error } = await supabase
     .from('crm_quotations')
@@ -113,7 +178,7 @@ export async function getQuotationById(id: string) {
       contact:crm_contacts(id, name, email, phone, company, job_title),
       items:crm_quotation_items(
         id, quantity, unit_price, discount, total_price,
-        product:products(id, title, slug)
+        product:products(id, title)
       )
     `)
     .eq('id', id)
@@ -128,7 +193,7 @@ export async function getQuotationById(id: string) {
 }
 
 export async function updateQuotationStatus(id: string, status: string) {
-  const supabase = createServerActionClient({ cookies })
+  const supabase = await createClient()
   
   const { error } = await supabase
     .from('crm_quotations')
@@ -145,7 +210,7 @@ export async function updateQuotationStatus(id: string, status: string) {
 }
 
 export async function updateQuotationPdf(id: string, pdfUrl: string) {
-  const supabase = createServerActionClient({ cookies })
+  const supabase = await createClient()
   
   const { error } = await supabase
     .from('crm_quotations')
@@ -159,7 +224,7 @@ export async function updateQuotationPdf(id: string, pdfUrl: string) {
 }
 
 export async function deleteQuotation(id: string) {
-  const supabase = createServerActionClient({ cookies })
+  const supabase = await createClient()
   
   const { error } = await supabase
     .from('crm_quotations')
