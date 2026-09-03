@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import Hero from '../components/Hero';
 import FeatureRow from '../components/FeatureRow';
 import FeaturedProducts from '../components/FeaturedProducts';
-import Industries from '../components/Industries';
+import WhyChooseUs from '../components/WhyChooseUs';
 
 export default async function Home() {
   const { data: settingsData } = await supabase
@@ -74,7 +74,7 @@ export default async function Home() {
         />
         <FeatureRow categories={featuredCategories || []} />
         <FeaturedProducts products={featuredProducts} />
-        <Industries />
+        <WhyChooseUs />
       </main>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs">
