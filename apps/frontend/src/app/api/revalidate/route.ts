@@ -43,8 +43,7 @@ export async function POST(req: NextRequest) {
       if (productId) {
         const { data: productCats } = await supabase
           .from('product_categories')
-          .select('categories(slug)
-    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)')
+          .select('categories(slug)')
           .eq('product_id', productId);
           
         const categorySlugs = productCats?.map((pc: any) => pc.categories?.slug).filter(Boolean) || [];
