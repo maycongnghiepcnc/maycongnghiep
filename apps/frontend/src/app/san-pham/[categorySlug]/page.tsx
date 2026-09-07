@@ -59,7 +59,6 @@ export default async function CategoryPage({ params }: PageProps) {
       product_categories!inner (
         category_id
       )
-    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     `)
     .eq('product_categories.category_id', category.id)
     .order('sort_order', { ascending: true })
