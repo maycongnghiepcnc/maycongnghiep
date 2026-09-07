@@ -4,6 +4,7 @@ export async function getCategories() {
   const { data, error } = await supabase
     .from('categories')
     .select('*')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
 
@@ -18,6 +19,7 @@ export async function getCategoryBySlug(slug: string) {
   const { data, error } = await supabase
     .from('categories')
     .select('*')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('slug', slug)
     .single()
 
@@ -41,6 +43,7 @@ export async function getProductsByCategorySlug(slug: string) {
         category_id
       )
     `)
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('product_categories.category_id', category.id)
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
@@ -65,6 +68,7 @@ export async function getProductBySlug(slug: string) {
         )
       )
     `)
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('slug', slug)
     .single()
 
@@ -88,6 +92,7 @@ export async function getAllProducts() {
         )
       )
     `)
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
 

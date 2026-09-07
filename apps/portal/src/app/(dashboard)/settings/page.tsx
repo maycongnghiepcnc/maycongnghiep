@@ -13,7 +13,9 @@ export default async function SettingsPage() {
     homeHeroBanner,
     homeHeroMode,
     homeHeroImageOnlyLandscape,
-    homeHeroImageOnlyPortrait
+    homeHeroImageOnlyPortrait,
+    siteName,
+    siteLogo
   ] = await Promise.all([
     getSetting('admin_email'),
     getSetting('company_name'),
@@ -25,7 +27,9 @@ export default async function SettingsPage() {
     getSetting('home_hero_banner'),
     getSetting('home_hero_mode'),
     getSetting('home_hero_image_only_landscape'),
-    getSetting('home_hero_image_only_portrait')
+    getSetting('home_hero_image_only_portrait'),
+    getSetting('site_name'),
+    getSetting('site_logo')
   ])
 
   const initialSettings = {
@@ -39,7 +43,9 @@ export default async function SettingsPage() {
     home_hero_banner: homeHeroBanner || '',
     home_hero_mode: homeHeroMode || 'standard',
     home_hero_image_only_landscape: homeHeroImageOnlyLandscape || '',
-    home_hero_image_only_portrait: homeHeroImageOnlyPortrait || ''
+    home_hero_image_only_portrait: homeHeroImageOnlyPortrait || '',
+    site_name: siteName || '',
+    site_logo: siteLogo || ''
   }
 
   return (

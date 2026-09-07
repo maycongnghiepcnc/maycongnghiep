@@ -19,6 +19,7 @@ export async function generateMetadata({ params }: PageProps) {
   const { data: page } = await supabase
     .from('cms_pages')
     .select('title')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('slug', slug)
     .eq('is_published', true)
     .single()
@@ -37,6 +38,7 @@ export default async function SlugPage({ params }: PageProps) {
   const { data: page } = await supabase
     .from('cms_pages')
     .select('*')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('slug', slug)
     .eq('is_published', true)
     .single()

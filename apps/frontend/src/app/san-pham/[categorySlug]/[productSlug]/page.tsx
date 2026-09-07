@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: PageProps) {
   const { data: product } = await supabase
     .from('products')
     .select('title, meta_title, meta_description')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('slug', productSlug)
     .single()
 
@@ -47,6 +48,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           title,
           slug
         )
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
       )
     `)
     .eq('slug', productSlug)
@@ -74,6 +76,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
         product_categories!inner (
           category_id
         )
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
       `)
       .eq('product_categories.category_id', category.id)
       .neq('id', product.id)

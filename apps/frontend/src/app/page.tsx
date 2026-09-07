@@ -8,10 +8,13 @@ import WhyChooseUs from '../components/WhyChooseUs';
 import Services from '../components/Services';
 import CTA from '../components/CTA';
 
+export const revalidate = 60;
+
 export default async function Home() {
   const { data: settingsData } = await supabase
     .from('system_settings')
     .select('key, value')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .in('key', [
       'home_hero_banner',
       'home_hero_mode',
@@ -19,7 +22,8 @@ export default async function Home() {
       'home_hero_image_only_portrait',
       'company_phone',
       'company_zalo',
-      'company_fb'
+      'company_fb',
+      'company_name'
     ]);
 
   const settingsMap = (settingsData || []).reduce((acc: any, item) => {
@@ -46,6 +50,7 @@ export default async function Home() {
         )
       )
     `)
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('is_featured', true)
     .order('sort_order', { ascending: true })
     .limit(8);
@@ -53,6 +58,7 @@ export default async function Home() {
   const { data: featuredCategories } = await supabase
     .from('categories')
     .select('title, slug, summary')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('is_featured_home', true)
     .order('sort_order', { ascending: true })
     .limit(4);
@@ -86,7 +92,7 @@ export default async function Home() {
       </main>
 
       <footer className="w-full text-center py-6 text-gray-500 bg-[#0b1221] text-xs">
-        <p>&copy; {new Date().getFullYear()} Công ty TNHH YUJI VINA (YUJI VINA). Tất cả các quyền được bảo lưu.</p>
+        <p>&copy; {new Date().getFullYear()} {settingsMap['company_name'] || 'Công ty TNHH YUJI VINA (YUJI VINA)'}. Tất cả các quyền được bảo lưu.</p>
       </footer>
     </div>
   );

@@ -5,7 +5,7 @@ import { inviteUser } from '@/app/actions/users'
 import { Send, Loader2 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
-export function InviteForm() {
+export function InviteForm({ currentUserRole }: { currentUserRole: string | null }) {
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(formData: FormData) {
@@ -63,11 +63,43 @@ export function InviteForm() {
             className="w-full bg-background border border-border/50 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
             defaultValue="user"
           >
-            <option value="admin">Quản trị viên (Admin)</option>
+            {currentUserRole === 'super_admin' && (
+              <option value="super_admin">Siêu quản trị (Super Admin)</option>
+            )}
+            {currentUserRole === 'super_admin' && (
+              <option value="admin">Quản trị viên (Admin)</option>
+            )}
             <option value="user">Người dùng (User)</option>
-            <option value="pending">Chờ duyệt (Pending)</option>
           </select>
         </div>
+
+        {currentUserRole === 'super_admin' && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Tenancies</label>
+            <div className="flex flex-col gap-2 p-2 bg-background border border-border/50 rounded-xl">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  name="tenancies" 
+                  value="maycongnghiep" 
+                  defaultChecked 
+                  className="w-4 h-4 rounded border-border text-primary focus:ring-accent"
+                />
+                <span className="text-sm text-foreground font-medium">May Công Nghiệp CNC (maycongnghiep)</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  name="tenancies" 
+                  value="duckhacvitinh" 
+                  className="w-4 h-4 rounded border-border text-primary focus:ring-accent"
+                />
+                <span className="text-sm text-foreground font-medium">Đục Khắc Vi Tính (duckhacvitinh)</span>
+              </label>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">Admin hệ thống có thể chọn nhiều tenancy.</p>
+          </div>
+        )}
 
         <button
           type="submit"

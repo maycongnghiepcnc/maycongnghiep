@@ -1,14 +1,17 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export async function getPages() {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('cms_pages')
     .select('*')
+    .eq('tenancy', active_tenancy)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -20,9 +23,11 @@ export async function getPages() {
 
 export async function getPageById(id: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('cms_pages')
     .select('*')
+    .eq('tenancy', active_tenancy)
     .eq('id', id)
     .single()
 
@@ -35,6 +40,7 @@ export async function getPageById(id: string) {
 
 export async function createPage(formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const title = formData.get('title') as string
   const slug = formData.get('slug') as string
@@ -49,8 +55,7 @@ export async function createPage(formData: FormData) {
 
   const { error } = await supabase
     .from('cms_pages')
-    .insert([{ 
-      title, 
+    .insert([{ tenancy: active_tenancy, title, 
       slug, 
       content, 
       is_published,
@@ -73,6 +78,7 @@ export async function createPage(formData: FormData) {
 
 export async function updatePage(id: string, formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const title = formData.get('title') as string
   const slug = formData.get('slug') as string
@@ -87,8 +93,7 @@ export async function updatePage(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from('cms_pages')
-    .update({ 
-      title, 
+    .update({ tenancy: active_tenancy, title, 
       slug, 
       content, 
       is_published,
@@ -110,7 +115,8 @@ export async function updatePage(id: string, formData: FormData) {
 
 export async function deletePage(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase.from('cms_pages').delete().eq('id', id)
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
+  const { error } = await supabase.from('cms_pages').delete().eq('tenancy', active_tenancy).eq('id', id)
 
   if (error) {
     console.error('Error deleting page:', error)

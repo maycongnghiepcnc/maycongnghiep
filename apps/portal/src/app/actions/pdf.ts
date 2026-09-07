@@ -2,6 +2,7 @@
 
 import { Resend } from 'resend'
 import { updateQuotationStatus } from './quotations'
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -16,6 +17,7 @@ export async function sendQuotationEmail(
 ) {
   try {
     const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
@@ -55,10 +57,10 @@ export async function sendQuotationEmail(
     await updateQuotationStatus(quotationId, 'sent')
 
     // Log activity in CRM
-    const { data: quotation } = await supabase.from('crm_quotations').select('contact_id, opportunity_id').eq('id', quotationId).single()
+    const { data: quotation } = await supabase.from('crm_quotations').select('contact_id, opportunity_id')
+    .eq('tenancy', active_tenancy).eq('id', quotationId).single()
     if (quotation) {
-      await supabase.from('crm_activities').insert({
-        contact_id: quotation.contact_id,
+      await supabase.from('crm_activities').insert({ tenancy: active_tenancy, contact_id: quotation.contact_id,
         opportunity_id: quotation.opportunity_id,
         type: 'email',
         description: `Đã gửi báo giá ${fileName} tới ${toEmail}`,

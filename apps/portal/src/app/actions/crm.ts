@@ -1,5 +1,6 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -10,9 +11,11 @@ import { redirect } from 'next/navigation'
 
 export async function getContacts() {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('crm_contacts')
     .select(`*`)
+    .eq('tenancy', active_tenancy)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -24,9 +27,11 @@ export async function getContacts() {
 
 export async function getContactById(id: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('crm_contacts')
     .select(`*`)
+    .eq('tenancy', active_tenancy)
     .eq('id', id)
     .single()
 
@@ -39,6 +44,7 @@ export async function getContactById(id: string) {
 
 export async function createContact(formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const name = formData.get('name') as string
   const email = formData.get('email') as string || null
@@ -57,8 +63,7 @@ export async function createContact(formData: FormData) {
 
   const { error } = await supabase
     .from('crm_contacts')
-    .insert([{ 
-      name, email, phone, company, job_title, status, note,
+    .insert([{ tenancy: active_tenancy, name, email, phone, company, job_title, status, note,
       created_by: userId, updated_by: userId
     }])
 
@@ -73,6 +78,7 @@ export async function createContact(formData: FormData) {
 
 export async function updateContact(id: string, formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const name = formData.get('name') as string
   const email = formData.get('email') as string || null
@@ -91,8 +97,7 @@ export async function updateContact(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from('crm_contacts')
-    .update({ 
-      name, email, phone, company, job_title, status, note,
+    .update({ tenancy: active_tenancy, name, email, phone, company, job_title, status, note,
       updated_by: userId
     })
     .eq('id', id)
@@ -108,7 +113,8 @@ export async function updateContact(id: string, formData: FormData) {
 
 export async function deleteContact(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase.from('crm_contacts').delete().eq('id', id)
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
+  const { error } = await supabase.from('crm_contacts').delete().eq('tenancy', active_tenancy).eq('id', id)
 
   if (error) {
     console.error('Error deleting contact:', error)
@@ -124,12 +130,14 @@ export async function deleteContact(id: string) {
 
 export async function getOpportunities() {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('crm_opportunities')
     .select(`
       *,
       contact:crm_contacts(name, company)
     `)
+    .eq('tenancy', active_tenancy)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -141,9 +149,11 @@ export async function getOpportunities() {
 
 export async function getOpportunityById(id: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('crm_opportunities')
     .select(`*`)
+    .eq('tenancy', active_tenancy)
     .eq('id', id)
     .single()
 
@@ -156,6 +166,7 @@ export async function getOpportunityById(id: string) {
 
 export async function createOpportunity(formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const title = formData.get('title') as string
   const contact_id = formData.get('contact_id') as string || null
@@ -179,8 +190,7 @@ export async function createOpportunity(formData: FormData) {
 
   const { error } = await supabase
     .from('crm_opportunities')
-    .insert([{ 
-      title, contact_id, expected_revenue, stage, probability, note,
+    .insert([{ tenancy: active_tenancy, title, contact_id, expected_revenue, stage, probability, note,
       created_by: userId, updated_by: userId
     }])
 
@@ -195,6 +205,7 @@ export async function createOpportunity(formData: FormData) {
 
 export async function updateOpportunity(id: string, formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const title = formData.get('title') as string
   const contact_id = formData.get('contact_id') as string || null
@@ -214,8 +225,7 @@ export async function updateOpportunity(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from('crm_opportunities')
-    .update({ 
-      title, contact_id, expected_revenue, stage, probability, note,
+    .update({ tenancy: active_tenancy, title, contact_id, expected_revenue, stage, probability, note,
       updated_by: userId
     })
     .eq('id', id)
@@ -231,7 +241,8 @@ export async function updateOpportunity(id: string, formData: FormData) {
 
 export async function deleteOpportunity(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase.from('crm_opportunities').delete().eq('id', id)
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
+  const { error } = await supabase.from('crm_opportunities').delete().eq('tenancy', active_tenancy).eq('id', id)
 
   if (error) {
     console.error('Error deleting opportunity:', error)
@@ -247,6 +258,7 @@ export async function deleteOpportunity(id: string) {
 
 export async function getActivities(contactId?: string, opportunityId?: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   let query = supabase
     .from('crm_activities')
@@ -255,6 +267,7 @@ export async function getActivities(contactId?: string, opportunityId?: string) 
       contact:crm_contacts(name),
       opportunity:crm_opportunities(title)
     `)
+    .eq('tenancy', active_tenancy)
     .order('performed_at', { ascending: false })
     
   if (contactId) query = query.eq('contact_id', contactId)
@@ -271,6 +284,7 @@ export async function getActivities(contactId?: string, opportunityId?: string) 
 
 export async function createActivity(formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const type = formData.get('type') as string || 'note'
   const description = formData.get('description') as string || null
@@ -288,8 +302,7 @@ export async function createActivity(formData: FormData) {
 
   const { error } = await supabase
     .from('crm_activities')
-    .insert([{ 
-      type, description, outcome, contact_id, opportunity_id, performed_at,
+    .insert([{ tenancy: active_tenancy, type, description, outcome, contact_id, opportunity_id, performed_at,
       created_by: userId, updated_by: userId
     }])
 

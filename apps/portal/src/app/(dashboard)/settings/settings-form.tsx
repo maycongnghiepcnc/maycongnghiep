@@ -57,13 +57,32 @@ export function SettingsForm({ initialSettings }: SettingsFormProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Tên Công ty</label>
+            <label className="text-sm font-medium text-foreground">Tên Website (Site Name)</label>
+            <input
+              type="text"
+              value={settings['site_name'] || ''}
+              onChange={(e) => handleChange('site_name', e.target.value)}
+              className="w-full bg-background border border-border/50 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
+              placeholder="VD: YUJI VINA"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Logo Website</label>
+            <ImageUpload
+              value={settings['site_logo'] ? [settings['site_logo']] : []}
+              onChange={(urls) => handleChange('site_logo', urls.length > 0 ? urls[urls.length - 1] : '')}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Tên Công ty (Trên báo giá)</label>
             <input
               type="text"
               value={settings['company_name'] || ''}
               onChange={(e) => handleChange('company_name', e.target.value)}
               className="w-full bg-background border border-border/50 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground"
-              placeholder="VD: YUJI VINA"
+              placeholder="VD: CÔNG TY TNHH YUJI VINA"
             />
           </div>
 

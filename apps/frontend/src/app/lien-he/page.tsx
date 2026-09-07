@@ -8,6 +8,7 @@ export default async function ContactPage() {
   const { data: settingsData } = await supabase
     .from('system_settings')
     .select('key, value')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .in('key', ['company_address', 'company_phone', 'company_email']);
     
   const settings = (settingsData || []).reduce((acc: any, item) => {

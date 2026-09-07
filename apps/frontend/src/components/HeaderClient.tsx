@@ -24,6 +24,8 @@ export default function HeaderClient({
   const phone = settings.company_phone || "0987 654 321";
   const fbLink = settings.company_fb || "#";
   const zaloLink = settings.company_zalo || "#";
+  const siteName = settings.site_name || "YUJI VINA";
+  const siteLogo = settings.site_logo || "/logo.png";
 
   return (
     <header className="w-full">
@@ -57,8 +59,8 @@ export default function HeaderClient({
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <img 
-            src="/logo.png" 
-            alt="YUJI VINA Logo" 
+            src={siteLogo} 
+            alt={`${siteName} Logo`} 
             className="h-12 md:h-14 w-auto object-contain"
           />
         </Link>

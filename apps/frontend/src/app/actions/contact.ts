@@ -28,7 +28,8 @@ export async function submitContactForm(formData: FormData) {
         name,
         email: email || null,
         phone: phone || null,
-        status: 'new'
+        status: 'new',
+        tenancy: process.env.NEXT_PUBLIC_TENANCY
       })
       .select('id')
       .single()
@@ -44,7 +45,8 @@ export async function submitContactForm(formData: FormData) {
       .insert({
         contact_id: contact.id,
         title: `Liên hệ từ Website - ${name}`,
-        stage: 'lead'
+        stage: 'lead',
+        tenancy: process.env.NEXT_PUBLIC_TENANCY
       })
 
     if (oppError) {
@@ -58,7 +60,8 @@ export async function submitContactForm(formData: FormData) {
         .insert({
           contact_id: contact.id,
           type: 'note',
-          description: message
+          description: message,
+          tenancy: process.env.NEXT_PUBLIC_TENANCY
         })
     }
 
@@ -68,7 +71,8 @@ export async function submitContactForm(formData: FormData) {
       .insert({
         title: 'Khách hàng liên hệ mới',
         message: `${name} vừa gửi yêu cầu liên hệ từ Website`,
-        link: `/crm/contacts` // Or link to the specific contact page if you have one
+        link: `/crm/contacts`, // Or link to the specific contact page if you have one
+        tenancy: process.env.NEXT_PUBLIC_TENANCY
       })
 
     // 5. Send Email via Resend
@@ -77,6 +81,7 @@ export async function submitContactForm(formData: FormData) {
       .from('system_settings')
       .select('value')
       .eq('key', 'admin_email')
+      .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
       .single()
     
     const adminEmail = setting?.value

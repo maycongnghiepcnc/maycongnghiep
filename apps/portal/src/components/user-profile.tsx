@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { LogOut, KeyRound, Loader2, User } from 'lucide-react'
+import { LogOut, KeyRound, Loader2, User, Building } from 'lucide-react'
 import { signOut, setPassword } from '@/app/actions/auth'
 import toast from 'react-hot-toast'
+import Link from 'next/link'
 
 export function UserProfile({ email }: { email: string }) {
   const [showPasswordModal, setShowPasswordModal] = useState(false)
@@ -74,6 +75,14 @@ export function UserProfile({ email }: { email: string }) {
               <KeyRound className="w-4 h-4" />
               Thiết lập Mật khẩu
             </button>
+            <Link
+              href="/select-tenancy"
+              onClick={() => setShowMenu(false)}
+              className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-accent/10 hover:text-accent transition-colors text-left"
+            >
+              <Building className="w-4 h-4" />
+              Đổi Tenancy
+            </Link>
             <div className="h-px bg-border/50 my-1"></div>
             <form action={signOut}>
               <button 

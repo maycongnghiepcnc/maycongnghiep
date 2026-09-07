@@ -1,5 +1,6 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
@@ -23,6 +24,7 @@ export async function createQuotation(data: {
   items: QuotationItem[]
 }) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data: userData, error: userError } = await supabase.auth.getUser()
 
   if (userError || !userData?.user) {
@@ -37,8 +39,7 @@ export async function createQuotation(data: {
   // 1. Insert Quotation
   const { data: quotation, error: qError } = await supabase
     .from('crm_quotations')
-    .insert({
-      code,
+    .insert({ tenancy: active_tenancy, code,
       contact_id: data.contact_id,
       opportunity_id: data.opportunity_id || null,
       subtotal: data.subtotal,
@@ -74,7 +75,7 @@ export async function createQuotation(data: {
   if (itemsError) {
     console.error('Create quotation items error:', itemsError)
     // Rollback quotation (best effort)
-    await supabase.from('crm_quotations').delete().eq('id', quotation.id)
+    await supabase.from('crm_quotations').delete().eq('tenancy', active_tenancy).eq('id', quotation.id)
     throw new Error('Could not create quotation items')
   }
 
@@ -94,6 +95,7 @@ export async function updateQuotation(id: string, data: {
   items: QuotationItem[]
 }) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data: userData, error: userError } = await supabase.auth.getUser()
 
   if (userError || !userData?.user) {
@@ -103,8 +105,7 @@ export async function updateQuotation(id: string, data: {
   // 1. Update Quotation
   const { error: qError } = await supabase
     .from('crm_quotations')
-    .update({
-      contact_id: data.contact_id,
+    .update({ tenancy: active_tenancy, contact_id: data.contact_id,
       opportunity_id: data.opportunity_id || null,
       subtotal: data.subtotal,
       discount: data.discount,
@@ -122,7 +123,7 @@ export async function updateQuotation(id: string, data: {
   }
 
   // 2. Delete Old Items
-  await supabase.from('crm_quotation_items').delete().eq('quotation_id', id)
+  await supabase.from('crm_quotation_items').delete().eq('tenancy', active_tenancy).eq('quotation_id', id)
 
   // 3. Insert New Items
   const itemsToInsert = data.items.map(item => ({
@@ -150,6 +151,7 @@ export async function updateQuotation(id: string, data: {
 
 export async function getQuotations() {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const { data, error } = await supabase
     .from('crm_quotations')
@@ -158,6 +160,7 @@ export async function getQuotations() {
       contact:crm_contacts(id, name, company),
       opportunity:crm_opportunities(id, title)
     `)
+    .eq('tenancy', active_tenancy)
     .order('created_at', { ascending: false })
     
   if (error) {
@@ -170,6 +173,7 @@ export async function getQuotations() {
 
 export async function getQuotationById(id: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const { data, error } = await supabase
     .from('crm_quotations')
@@ -181,6 +185,7 @@ export async function getQuotationById(id: string) {
         product:products(id, title)
       )
     `)
+    .eq('tenancy', active_tenancy)
     .eq('id', id)
     .single()
     
@@ -194,10 +199,11 @@ export async function getQuotationById(id: string) {
 
 export async function updateQuotationStatus(id: string, status: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const { error } = await supabase
     .from('crm_quotations')
-    .update({ status })
+    .update({ tenancy: active_tenancy, status })
     .eq('id', id)
     
   if (error) {
@@ -211,10 +217,11 @@ export async function updateQuotationStatus(id: string, status: string) {
 
 export async function updateQuotationPdf(id: string, pdfUrl: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const { error } = await supabase
     .from('crm_quotations')
-    .update({ pdf_url: pdfUrl })
+    .update({ tenancy: active_tenancy, pdf_url: pdfUrl })
     .eq('id', id)
     
   if (error) {
@@ -225,10 +232,11 @@ export async function updateQuotationPdf(id: string, pdfUrl: string) {
 
 export async function deleteQuotation(id: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const { error } = await supabase
     .from('crm_quotations')
-    .delete()
+    .delete().eq('tenancy', active_tenancy)
     .eq('id', id)
     
   if (error) {

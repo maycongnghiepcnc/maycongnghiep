@@ -43,7 +43,8 @@ export async function POST(req: NextRequest) {
       if (productId) {
         const { data: productCats } = await supabase
           .from('product_categories')
-          .select('categories(slug)')
+          .select('categories(slug)
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)')
           .eq('product_id', productId);
           
         const categorySlugs = productCats?.map((pc: any) => pc.categories?.slug).filter(Boolean) || [];
@@ -69,8 +70,10 @@ export async function POST(req: NextRequest) {
         
         const { category_id, product_id } = linkRecord;
         if (category_id && product_id) {
-          const { data: catData } = await supabase.from('categories').select('slug').eq('id', category_id).single();
-          const { data: prodData } = await supabase.from('products').select('slug').eq('id', product_id).single();
+          const { data: catData } = await supabase.from('categories').select('slug')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY).eq('id', category_id).single();
+          const { data: prodData } = await supabase.from('products').select('slug')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY).eq('id', product_id).single();
           
           if (catData?.slug) {
             revalidatePath(`/san-pham/${catData.slug}`);

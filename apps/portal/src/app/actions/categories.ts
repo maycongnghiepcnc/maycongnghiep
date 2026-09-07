@@ -1,5 +1,6 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -7,9 +8,11 @@ import { slugify } from '@/utils/slugify'
 
 export async function getCategories() {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('categories')
     .select('*')
+    .eq('tenancy', active_tenancy)
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
 
@@ -22,6 +25,7 @@ export async function getCategories() {
 
 export async function createCategory(formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const title = formData.get('title') as string
   const summary = formData.get('summary') as string
@@ -56,8 +60,7 @@ export async function createCategory(formData: FormData) {
   while (!success && counter < 10) {
     const { error } = await supabase
       .from('categories')
-      .insert([{ 
-        title, 
+      .insert([{ tenancy: active_tenancy, title, 
         summary, 
         image_url,
         hero_banner,
@@ -92,7 +95,8 @@ export async function createCategory(formData: FormData) {
 
 export async function deleteCategory(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase.from('categories').delete().eq('id', id)
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
+  const { error } = await supabase.from('categories').delete().eq('tenancy', active_tenancy).eq('id', id)
 
   if (error) {
     console.error('Error deleting category:', error)
@@ -104,9 +108,11 @@ export async function deleteCategory(id: string) {
 
 export async function getCategoryById(id: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('categories')
     .select('*')
+    .eq('tenancy', active_tenancy)
     .eq('id', id)
     .single()
 
@@ -119,6 +125,7 @@ export async function getCategoryById(id: string) {
 
 export async function updateCategory(id: string, formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const title = formData.get('title') as string
   const summary = formData.get('summary') as string
@@ -152,8 +159,7 @@ export async function updateCategory(id: string, formData: FormData) {
   while (!success && counter < 10) {
     const { error } = await supabase
       .from('categories')
-      .update({ 
-        title, 
+      .update({ tenancy: active_tenancy, title, 
         summary, 
         image_url,
         hero_banner,

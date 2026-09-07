@@ -5,7 +5,7 @@ import { updateUserRole } from '@/app/actions/users'
 import { toast } from 'react-hot-toast'
 import { Loader2 } from 'lucide-react'
 
-export function RoleSelect({ userId, initialRole }: { userId: string, initialRole: string }) {
+export function RoleSelect({ userId, initialRole, currentUserRole }: { userId: string, initialRole: string, currentUserRole: string | null }) {
   const [loading, setLoading] = useState(false)
   const [role, setRole] = useState(initialRole)
 
@@ -30,17 +30,24 @@ export function RoleSelect({ userId, initialRole }: { userId: string, initialRol
     }
   }
 
+  // Admin cannot edit Super Admin role
+  const disabled = loading || (initialRole === 'super_admin' && currentUserRole !== 'super_admin')
+
   return (
     <div className="relative inline-block w-40">
       <select
         value={role}
         onChange={handleChange}
-        disabled={loading}
+        disabled={disabled}
         className="w-full appearance-none bg-background border border-border/50 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all text-foreground disabled:opacity-50"
       >
-        <option value="admin">Admin</option>
+        {currentUserRole === 'super_admin' && (
+          <option value="super_admin">Super Admin</option>
+        )}
+        {(currentUserRole === 'super_admin' || initialRole === 'admin') && (
+          <option value="admin">Admin</option>
+        )}
         <option value="user">User</option>
-        <option value="pending">Pending</option>
       </select>
       
       {loading && (

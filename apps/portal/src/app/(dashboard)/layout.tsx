@@ -1,9 +1,12 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import { SidebarNav } from '@/components/sidebar-nav'
 import { Factory } from 'lucide-react'
 import { Notifications } from '@/components/notifications'
 import { UserProfile } from '@/components/user-profile'
+import { getSetting } from '@/app/actions/settings'
+import Image from 'next/image'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -34,16 +37,33 @@ export default async function DashboardLayout({
     return redirect('/pending')
   }
 
+  const cookieStore = await cookies()
+  const activeTenancy = cookieStore.get('active_tenancy')?.value
+
+  if (!activeTenancy) {
+    return redirect('/select-tenancy')
+  }
+
+  const [siteName, siteLogo] = await Promise.all([
+    getSetting('site_name'),
+    getSetting('site_logo')
+  ])
+
+  const displayName = siteName || 'Admin Portal'
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Sidebar */}
       <aside className="w-64 flex flex-col bg-card border-r border-border/50 shadow-xl z-20">
         {/* Brand Area */}
         <div className="h-16 flex items-center gap-3 px-6 border-b border-border/50">
-          <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/50 text-accent">
-            <Factory className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center border border-primary/20 text-accent overflow-hidden relative">
+            {siteLogo ? (
+              <Image src={siteLogo} alt={displayName} fill className="object-contain p-1" />
+            ) : (
+              <Factory className="w-5 h-5" />
+            )}
           </div>
-          <span className="font-bold text-lg text-foreground tracking-tight">Admin Portal</span>
         </div>
 
         {/* Navigation */}

@@ -1,5 +1,6 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -7,6 +8,7 @@ import { slugify } from '@/utils/slugify'
 
 export async function getProducts() {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -19,6 +21,7 @@ export async function getProducts() {
         )
       )
     `)
+    .eq('tenancy', active_tenancy)
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
 
@@ -31,6 +34,7 @@ export async function getProducts() {
 
 export async function createProduct(formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const title = formData.get('title') as string
   const summary = formData.get('summary') as string
@@ -78,8 +82,7 @@ export async function createProduct(formData: FormData) {
   while (!success && counter < 10) {
     const { data: insertedProduct, error: productError } = await supabase
       .from('products')
-      .insert([{ 
-        title, 
+      .insert([{ tenancy: active_tenancy, title, 
         summary, 
         content, 
         price, 
@@ -141,7 +144,8 @@ export async function createProduct(formData: FormData) {
 
 export async function deleteProduct(id: string) {
   const supabase = await createClient()
-  const { error } = await supabase.from('products').delete().eq('id', id)
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
+  const { error } = await supabase.from('products').delete().eq('tenancy', active_tenancy).eq('id', id)
 
   if (error) {
     console.error('Error deleting product:', error)
@@ -153,6 +157,7 @@ export async function deleteProduct(id: string) {
 
 export async function getProductById(id: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   const { data, error } = await supabase
     .from('products')
     .select(`
@@ -161,6 +166,7 @@ export async function getProductById(id: string) {
         category_id
       )
     `)
+    .eq('tenancy', active_tenancy)
     .eq('id', id)
     .single()
 
@@ -173,6 +179,7 @@ export async function getProductById(id: string) {
 
 export async function updateProduct(id: string, formData: FormData) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   const title = formData.get('title') as string
   const summary = formData.get('summary') as string
@@ -219,8 +226,7 @@ export async function updateProduct(id: string, formData: FormData) {
   while (!success && counter < 10) {
     const { error: productError } = await supabase
       .from('products')
-      .update({ 
-        title, 
+      .update({ tenancy: active_tenancy, title, 
         summary, 
         content, 
         price, 
@@ -258,7 +264,7 @@ export async function updateProduct(id: string, formData: FormData) {
 
   // 2. Update Categories mappings
   // Delete existing mappings first
-  await supabase.from('product_categories').delete().eq('product_id', id)
+  await supabase.from('product_categories').delete().eq('tenancy', active_tenancy).eq('product_id', id)
   
   // Insert new mappings
   if (categoryIds.length > 0) {

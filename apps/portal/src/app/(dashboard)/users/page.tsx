@@ -1,6 +1,7 @@
-import { getUsers } from '@/app/actions/users'
+import { getUsers, getUserRole } from '@/app/actions/users'
 import { InviteForm } from './invite-form'
 import { RoleSelect } from './role-select'
+import { TenancyEdit } from './tenancy-edit'
 import dayjs from 'dayjs'
 import { ShieldCheck, User as UserIcon } from 'lucide-react'
 
@@ -10,6 +11,7 @@ export const metadata = {
 
 export default async function UsersPage() {
   const { users, error } = await getUsers()
+  const currentUserRole = await getUserRole()
 
   return (
     <div className="space-y-8">
@@ -41,11 +43,12 @@ export default async function UsersPage() {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                              {u.role === 'admin' ? <ShieldCheck className="w-5 h-5" /> : <UserIcon className="w-5 h-5" />}
+                              {u.role === 'super_admin' ? <ShieldCheck className="w-5 h-5 text-purple-500" /> : u.role === 'admin' ? <ShieldCheck className="w-5 h-5" /> : <UserIcon className="w-5 h-5" />}
                             </div>
                             <div>
                               <div className="font-medium text-foreground">{u.full_name || 'Chưa cập nhật'}</div>
                               <div className="text-sm text-muted-foreground">{u.email}</div>
+                              <TenancyEdit userId={u.id} initialTenancies={u.tenancies} currentUserRole={currentUserRole} />
                             </div>
                           </div>
                         </td>
@@ -55,7 +58,7 @@ export default async function UsersPage() {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <RoleSelect userId={u.id} initialRole={u.role} />
+                          <RoleSelect userId={u.id} initialRole={u.role} currentUserRole={currentUserRole} />
                         </td>
                       </tr>
                     ))}
@@ -74,7 +77,7 @@ export default async function UsersPage() {
         </div>
 
         <div>
-          <InviteForm />
+          <InviteForm currentUserRole={currentUserRole} />
         </div>
       </div>
     </div>

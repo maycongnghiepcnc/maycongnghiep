@@ -1,10 +1,12 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export async function getSales() {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
 
   const { data, error } = await supabase
     .from('crm_sales')
@@ -12,6 +14,7 @@ export async function getSales() {
       *,
       crm_customers(name, company, email)
     `)
+    .eq('tenancy', active_tenancy)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -24,6 +27,7 @@ export async function getSales() {
 
 export async function convertOpportunityToSale(opportunityId: string, amount: number, title: string, customerId?: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
 
   let finalCustomerId = customerId
 
@@ -32,6 +36,7 @@ export async function convertOpportunityToSale(opportunityId: string, amount: nu
     const { data: opp } = await supabase
       .from('crm_opportunities')
       .select('contact_id')
+    .eq('tenancy', active_tenancy)
       .eq('id', opportunityId)
       .single()
 
@@ -39,6 +44,7 @@ export async function convertOpportunityToSale(opportunityId: string, amount: nu
       const { data: cust } = await supabase
         .from('crm_customers')
         .select('id')
+    .eq('tenancy', active_tenancy)
         .eq('contact_id', opp.contact_id)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -53,8 +59,7 @@ export async function convertOpportunityToSale(opportunityId: string, amount: nu
   // Insert into sales
   const { error: insertError } = await supabase
     .from('crm_sales')
-    .insert({
-      opportunity_id: opportunityId,
+    .insert({ tenancy: active_tenancy, opportunity_id: opportunityId,
       customer_id: finalCustomerId || null,
       title: title,
       amount: amount,
@@ -69,7 +74,7 @@ export async function convertOpportunityToSale(opportunityId: string, amount: nu
   // Update opportunity status
   const { error: updateError } = await supabase
     .from('crm_opportunities')
-    .update({ stage: 'won' })
+    .update({ tenancy: active_tenancy, stage: 'won' })
     .eq('id', opportunityId)
 
   if (updateError) {

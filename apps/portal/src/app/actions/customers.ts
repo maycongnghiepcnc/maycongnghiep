@@ -1,14 +1,17 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 export async function getCustomers() {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
 
   const { data, error } = await supabase
     .from('crm_customers')
     .select('*')
+    .eq('tenancy', active_tenancy)
     .order('created_at', { ascending: false })
 
   if (error) {
@@ -21,11 +24,13 @@ export async function getCustomers() {
 
 export async function convertContactToCustomer(contactId: string) {
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
 
   // 1. Fetch contact details
   const { data: contact, error: fetchError } = await supabase
     .from('crm_contacts')
     .select('*')
+    .eq('tenancy', active_tenancy)
     .eq('id', contactId)
     .single()
 
@@ -36,8 +41,7 @@ export async function convertContactToCustomer(contactId: string) {
   // 2. Insert into customers
   const { data: newCustomer, error: insertError } = await supabase
     .from('crm_customers')
-    .insert({
-      contact_id: contact.id,
+    .insert({ tenancy: active_tenancy, contact_id: contact.id,
       name: contact.name,
       email: contact.email,
       phone: contact.phone,
@@ -54,7 +58,7 @@ export async function convertContactToCustomer(contactId: string) {
   // 3. Update contact status
   const { error: updateError } = await supabase
     .from('crm_contacts')
-    .update({ status: 'customer' })
+    .update({ tenancy: active_tenancy, status: 'customer' })
     .eq('id', contactId)
 
   if (updateError) {

@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: PageProps) {
   const { data: category } = await supabase
     .from('categories')
     .select('title')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('slug', categorySlug)
     .single()
 
@@ -34,6 +35,7 @@ export default async function CategoryPage({ params }: PageProps) {
   const { data: category } = await supabase
     .from('categories')
     .select('*')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .eq('slug', categorySlug)
     .single()
 
@@ -45,6 +47,7 @@ export default async function CategoryPage({ params }: PageProps) {
   const { data: categories } = await supabase
     .from('categories')
     .select('*')
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
 
@@ -56,6 +59,7 @@ export default async function CategoryPage({ params }: PageProps) {
       product_categories!inner (
         category_id
       )
+    .eq('tenancy', process.env.NEXT_PUBLIC_TENANCY)
     `)
     .eq('product_categories.category_id', category.id)
     .order('sort_order', { ascending: true })

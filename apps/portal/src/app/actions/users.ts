@@ -1,14 +1,15 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import { createAdminClient } from '@/utils/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
-// Helper to check if current user is admin
-async function isAdmin() {
+// Helper to check current user role
+export async function getUserRole() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return false
+  if (!user) return null
 
   const { data: roleData } = await supabase
     .from('user_roles')
@@ -16,13 +17,15 @@ async function isAdmin() {
     .eq('user_id', user.id)
     .single()
 
-  return roleData?.role === 'admin'
+  return roleData?.role || 'user'
 }
 
 export async function getUsers() {
-  if (!(await isAdmin())) return { error: 'Không có quyền truy cập', users: [] }
+  const role = await getUserRole()
+  if (role !== 'admin' && role !== 'super_admin') return { error: 'Không có quyền truy cập', users: [] }
 
   const supabase = await createClient()
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
   
   // Fetch user roles
   const { data: rolesData, error: rolesError } = await supabase
@@ -36,9 +39,16 @@ export async function getUsers() {
   }
 
   // Fetch profiles
-  const { data: profilesData, error: profilesError } = await supabase
+  let profilesQuery = supabase
     .from('profiles')
-    .select('id, email, full_name, avatar_url')
+    .select('id, email, full_name, avatar_url, tenancies')
+
+  if (role === 'admin') {
+    // Admin can only see users that belong to their active tenancy
+    profilesQuery = profilesQuery.contains('tenancies', [active_tenancy])
+  }
+
+  const { data: profilesData, error: profilesError } = await profilesQuery
 
   if (profilesError) {
     console.error('Error fetching profiles:', profilesError)
@@ -47,27 +57,43 @@ export async function getUsers() {
   // Merge
   const users = rolesData.map((u: any) => {
     const profile = profilesData?.find((p: any) => p.id === u.user_id)
+    if (!profile) return null // Filter out if not in the tenancy
+
     return {
       id: u.user_id,
       role: u.role,
       created_at: u.created_at,
-      email: profile?.email || 'N/A',
-      full_name: profile?.full_name || null,
-      avatar_url: profile?.avatar_url || null,
+      email: profile.email || 'N/A',
+      full_name: profile.full_name || null,
+      avatar_url: profile.avatar_url || null,
+      tenancies: profile.tenancies || [],
     }
-  })
+  }).filter(Boolean)
 
   return { users }
 }
 
 export async function inviteUser(formData: FormData) {
-  if (!(await isAdmin())) return { error: 'Không có quyền truy cập' }
+  const role = await getUserRole()
+  if (role !== 'admin' && role !== 'super_admin') return { error: 'Không có quyền truy cập' }
 
   const email = formData.get('email') as string
-  const role = formData.get('role') as string
+  const targetRole = formData.get('role') as string
   const fullName = formData.get('full_name') as string
+  
+  let tenancies = formData.getAll('tenancies') as string[]
+  
+  const active_tenancy = (await cookies()).get('active_tenancy')?.value
 
-  if (!email || !role) {
+  if (role === 'admin') {
+    if (targetRole === 'admin' || targetRole === 'super_admin') {
+      return { error: 'Admin không thể tạo Admin khác' }
+    }
+    // Admin can only assign users to their active tenancy
+    tenancies = [active_tenancy || 'maycongnghiep']
+  }
+
+  if (!email || !targetRole) {
     return { error: 'Vui lòng nhập đủ thông tin' }
   }
 
@@ -76,8 +102,9 @@ export async function inviteUser(formData: FormData) {
   // Use the Supabase Admin API to invite user
   const { data, error } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
     data: {
-      role: role, // the postgres trigger reads this
+      role: targetRole,
       full_name: fullName,
+      tenancies, // Sent to trigger
     }
   })
 
@@ -91,7 +118,12 @@ export async function inviteUser(formData: FormData) {
 }
 
 export async function updateUserRole(userId: string, newRole: string) {
-  if (!(await isAdmin())) return { error: 'Không có quyền truy cập' }
+  const role = await getUserRole()
+  if (role !== 'admin' && role !== 'super_admin') return { error: 'Không có quyền truy cập' }
+
+  if (role === 'admin' && (newRole === 'admin' || newRole === 'super_admin')) {
+    return { error: 'Admin không thể thăng quyền người khác lên Admin' }
+  }
 
   const supabase = await createClient()
 
@@ -103,6 +135,26 @@ export async function updateUserRole(userId: string, newRole: string) {
   if (error) {
     console.error('Update role error:', error)
     return { error: 'Không thể cập nhật quyền' }
+  }
+
+  revalidatePath('/users')
+  return { success: true }
+}
+
+export async function updateUserTenancies(userId: string, newTenancies: string[]) {
+  const role = await getUserRole()
+  if (role !== 'super_admin') return { error: 'Chỉ Super Admin mới có quyền cập nhật Tenancy của người khác' }
+
+  const supabase = await createClient()
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({ tenancies: newTenancies })
+    .eq('id', userId)
+
+  if (error) {
+    console.error('Update tenancies error:', error)
+    return { error: 'Không thể cập nhật tenancy' }
   }
 
   revalidatePath('/users')
