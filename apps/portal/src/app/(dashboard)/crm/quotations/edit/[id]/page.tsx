@@ -11,12 +11,13 @@ export default async function EditQuotationPage({
 }) {
   const id = (await params).id
   
-  const [contacts, opportunities, products, quote] = await Promise.all([
+  const [contacts, opportunities, productsResponse, quote] = await Promise.all([
     getContacts(),
     getOpportunities(),
-    getProducts(),
+    getProducts('', 1, 1000), // fetch all for the dropdown
     getQuotationById(id)
   ])
+  const products = productsResponse.data
 
   if (!quote) {
     notFound()

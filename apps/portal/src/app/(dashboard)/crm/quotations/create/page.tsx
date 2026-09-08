@@ -7,11 +7,12 @@ export default async function CreateQuotationPage({
 }: {
   searchParams: { contact_id?: string, opportunity_id?: string }
 }) {
-  const [contacts, opportunities, products] = await Promise.all([
+  const [contacts, opportunities, productsResponse] = await Promise.all([
     getContacts(),
     getOpportunities(),
-    getProducts()
+    getProducts('', 1, 1000) // fetch all for the dropdown
   ])
+  const products = productsResponse.data
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-5xl mx-auto pb-12">
