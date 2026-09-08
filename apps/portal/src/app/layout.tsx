@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fira_Sans, Fira_Code } from "next/font/google";
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
+import { Analytics } from "@vercel/analytics/next";
 
 const firaSans = Fira_Sans({
   variable: "--font-fira-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         {children}
         <Toaster position="bottom-right" />
+        <Analytics />
       </body>
     </html>
   );

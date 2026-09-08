@@ -21,6 +21,15 @@ export default async function SelectTenancyPage() {
     .eq('id', user.id)
     .single()
 
+  // Fetch role
+  const { data: roleData } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', user.id)
+    .single()
+
+  const isSuperAdmin = roleData?.role === 'super_admin'
+
   const tenancies = profile?.tenancies || ['maycongnghiep']
 
   // Fetch site names and logos for these tenancies
@@ -39,6 +48,14 @@ export default async function SelectTenancyPage() {
       logo: logoSetting?.value || null
     }
   })
+
+  if (isSuperAdmin) {
+    tenancyDetails.push({
+      id: 'system',
+      name: 'Hệ thống (Toàn cục)',
+      logo: null
+    })
+  }
 
   // Admin users might have many tenancies. 
   // If they only have one, we can auto-select it via the client component.

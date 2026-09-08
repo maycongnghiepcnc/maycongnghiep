@@ -19,6 +19,7 @@
     "@tiptap/extension-image": "^3.31.0",
     "@tiptap/react": "^3.31.0",
     "@tiptap/starter-kit": "^3.31.0",
+    "@vercel/analytics": "^2.0.1",
     "@vercel/blob": "^2.8.0",
     "dayjs": "^1.11.23",
     "lucide-react": "^1.39.0",

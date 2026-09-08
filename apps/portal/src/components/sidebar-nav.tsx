@@ -57,12 +57,19 @@ const navGroups = [
   }
 ]
 
-export function SidebarNav() {
+export function SidebarNav({ activeTenancy }: { activeTenancy?: string }) {
   const pathname = usePathname()
+
+  const filteredNavGroups = activeTenancy === 'system' 
+    ? navGroups.filter(g => g.title === 'Hệ thống').map(g => ({
+        ...g,
+        items: g.items.filter(i => i.title === 'Người dùng' || i.title === 'Tổng quan')
+      }))
+    : navGroups
 
   return (
     <nav className="flex-1 px-4 space-y-6">
-      {navGroups.map((group, index) => (
+      {filteredNavGroups.map((group, index) => (
         <div key={index} className="space-y-1">
           {group.title && (
             <h4 className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
