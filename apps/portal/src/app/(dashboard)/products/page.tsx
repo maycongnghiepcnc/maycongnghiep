@@ -1,9 +1,20 @@
 import Link from 'next/link'
 import { Plus, Image as ImageIcon, Trash2, Star, ExternalLink } from 'lucide-react'
 import { getProducts, deleteProduct } from '@/app/actions/products'
+import { ProductSearch } from '@/components/product-search'
+import { PaginationControls } from '@/components/pagination-controls'
 
-export default async function ProductsPage() {
-  const products = await getProducts()
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const resolvedParams = await searchParams
+  const q = typeof resolvedParams.q === 'string' ? resolvedParams.q : ''
+  const page = typeof resolvedParams.page === 'string' ? parseInt(resolvedParams.page, 10) : 1
+  const limit = 10
+
+  const { data: products, total, totalPages } = await getProducts(q, page, limit)
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -24,6 +35,9 @@ export default async function ProductsPage() {
       </div>
 
       <div className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl shadow-lg overflow-hidden">
+        <div className="p-4 border-b border-border/50 flex items-center justify-between">
+          <ProductSearch />
+        </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
             <thead className="text-xs text-muted-foreground uppercase bg-background/50 border-b border-border/50">
@@ -40,7 +54,7 @@ export default async function ProductsPage() {
               {products.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-muted-foreground">
-                    Chưa có sản phẩm nào. Hãy thêm sản phẩm đầu tiên!
+                    {q ? 'Không tìm thấy sản phẩm nào phù hợp.' : 'Chưa có sản phẩm nào. Hãy thêm sản phẩm đầu tiên!'}
                   </td>
                 </tr>
               ) : (
@@ -124,6 +138,7 @@ export default async function ProductsPage() {
             </tbody>
           </table>
         </div>
+        <PaginationControls currentPage={page} totalPages={totalPages} totalItems={total} />
       </div>
     </div>
   )

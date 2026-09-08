@@ -6,10 +6,11 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { slugify } from '@/utils/slugify'
 
-export async function getProducts() {
+export async function getProducts(searchQuery: string = '', page: number = 1, limit: number = 10) {
   const supabase = await createClient()
   const active_tenancy = (await cookies()).get('active_tenancy')?.value
-  const { data, error } = await supabase
+  
+  let query = supabase
     .from('products')
     .select(`
       *,
@@ -20,16 +21,33 @@ export async function getProducts() {
           slug
         )
       )
-    `)
+    `, { count: 'exact' })
     .eq('tenancy', active_tenancy)
+
+  if (searchQuery) {
+    query = query.or(`title.ilike.%${searchQuery}%,code.ilike.%${searchQuery}%`)
+  }
+
+  const from = (page - 1) * limit
+  const to = from + limit - 1
+
+  query = query
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false })
+    .range(from, to)
+
+  const { data, count, error } = await query
 
   if (error) {
     console.error('Error fetching products:', error)
-    return []
+    return { data: [], total: 0, totalPages: 0 }
   }
-  return data
+  
+  return { 
+    data: data || [], 
+    total: count || 0, 
+    totalPages: count ? Math.ceil(count / limit) : 0 
+  }
 }
 
 export async function createProduct(formData: FormData) {
